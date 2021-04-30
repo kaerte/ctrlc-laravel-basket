@@ -1,6 +1,6 @@
 {
-    "name": "ctrlc/basket",
-    "description": "Basket module",
+    "name": "ctrlc/laravel-basket",
+    "description": "Shopping basket",
     "type": "library",
     "authors": [
         {
