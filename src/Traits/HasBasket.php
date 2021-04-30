@@ -11,6 +11,6 @@ trait HasBasket
 {
     public function basket(): MorphOne
     {
-        return $this->morphOne(Basket::class, 'owner');
+        return $this->morphOne(Basket::class, 'basketable');
     }
 }
