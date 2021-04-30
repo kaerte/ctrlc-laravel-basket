@@ -21,6 +21,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function getEnvironmentSetUp($app)
     {
         include_once __DIR__ . '/migrations/2014_10_12_000000_create_users_table.php';
+        include_once __DIR__ . '/migrations/2014_10_12_000000_create_products_and_variants_table.php';
+
         (new \CreateUsersTable())->up();
+        (new \CreateProductsAndVariantsTable())->up();
     }
 }

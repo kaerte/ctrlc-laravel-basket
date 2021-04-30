@@ -3,7 +3,7 @@
 namespace Ctrlc\Basket\Tests\Feature;
 
 use Ctrlc\Basket\Facades\Basket;
-use Ctrlc\Basket\Models\Product;
+use Ctrlc\Basket\Tests\Product;
 use Ctrlc\Basket\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -26,51 +26,49 @@ class BasketTest extends TestCase
 
     public function test_product_creation(): void
     {
-        $product = $this->product;
-
+        $variant = $this->product->variant;
         $this->assertDatabaseHas('product_variants', [
-            'name' => $product->variant->name,
+            'name' => $variant->name,
             'default' => 1,
         ]);
 
-        self::assertInstanceOf($product::class, $product->variant->item);
+        self::assertInstanceOf(Product::class, $variant->item);
     }
 
     public function test_add_to_basket_total(): void
     {
-        $product = $this->product;
+        $variant = $this->product->variant;
+        Basket::add($variant)
+            ->add($variant);
 
-        Basket::add($product->variant)
-            ->add($product->variant);
-
-        self::assertEquals($product->price*2, Basket::total());
+        self::assertEquals($variant->price * 2, Basket::total());
     }
 
     public function test_add_to_basket_quantity(): void
     {
-        $product = $this->product;
-        $basket = Basket::add($product->variant)
-            ->add($product->variant);
+        $variant = $this->product->variant;
+        $basket = Basket::add($variant)
+            ->add($variant);
 
         self::assertEquals(2, $basket->items->first()->quantity);
     }
 
     public function test_remove_from_basket(): void
     {
-        $product = $this->product;
-        $basket = Basket::add($product->variant)
-            ->add($product->variant)
-            ->remove($product->variant);
+        $variant = $this->product->variant;
+        $basket = Basket::add($variant)
+            ->add($variant)
+            ->remove($variant);
 
         self::assertEquals(1, $basket->items->first()->quantity);
     }
 
     public function test_remove_all_from_basket(): void
     {
-        $product = $this->product;
-        $basket = Basket::add($product->variant)
-            ->add($product->variant)
-            ->remove($product->variant, 2);
+        $variant = $this->product->variant;
+        $basket =  Basket::add($variant)
+            ->add($variant)
+            ->remove($variant, 2);
 
         self::assertEmpty($basket->items);
         self::assertEquals(0, Basket::total());

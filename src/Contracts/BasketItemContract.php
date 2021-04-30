@@ -2,13 +2,9 @@
 
 namespace Ctrlc\Basket\Contracts;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 interface BasketItemContract
 {
-    public function product(): MorphTo|HasOne|Model;
-
-    public function variant(): MorphTo|HasOne;
+    public function variant(): HasOne;
 }

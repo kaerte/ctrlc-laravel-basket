@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class BasketItem extends Model implements BasketItemContract
+class BasketItem extends Model
 {
     protected $casts = [
         'product_id' => 'int',
@@ -20,12 +20,7 @@ class BasketItem extends Model implements BasketItemContract
         'quantity',
     ];
 
-    public function product(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function variant(): MorphTo
+    public function item(): MorphTo
     {
         return $this->morphTo();
     }
@@ -37,12 +32,7 @@ class BasketItem extends Model implements BasketItemContract
 
     public function getPriceAttribute(): float|int
     {
-        if ($this->variant_id) {
-            return $this->product()->ofVariant($this->variant_id)->price;
-        } else {
-            //default variant
-            return $this->product()->variant->price;
-        }
+        return $this->item->price;
     }
 
     protected static function newFactory()

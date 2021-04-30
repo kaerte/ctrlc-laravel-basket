@@ -2,7 +2,7 @@
 
 namespace Ctrlc\Basket\Models;
 
-use Ctrlc\Basket\Contracts\BasketItemVariantContract;
+use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Database\Factories\BasketFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,10 +35,8 @@ class Basket extends Model
     public function getTotalAttribute(): float|int
     {
         $total = 0;
-        foreach ($this->items as $i) {
-            if ($i->product) {
-                $total += $i->product->price * $i->quantity;
-            }
+        foreach ($this->items as $item) {
+            $total += $item->price * $item->quantity;
         }
 
         return $total;
@@ -49,23 +47,24 @@ class Basket extends Model
         return $this->getTotalAttribute();
     }
 
-    public function add(BasketItemVariantContract $productVariant, ?int $quantity = 1): Basket
+    public function add(ProductVariantContract $variant, ?int $quantity = 1): Basket
     {
-        //todo check if product can be added to basket
+        if ($variant->getAvailableQuantityAttribute() < $quantity) {
+            throw new \InvalidArgumentException('Product of this quantity is not in stock');
+        }
 
-        \DB::transaction(function () use ($productVariant, $quantity) {
-            $this->fresh('items.product');
-            $productVariant->load('item');
+        \DB::transaction(function () use ($variant, $quantity) {
+            $this->fresh('items.item');
+            $variant->load('item');
 
-            $basketItem = $this->findBasketItemFromVariant($productVariant);
+            $basketItem = $this->getBasketItem($variant);
 
-            if ($basketItem == null) {
+            if (!$basketItem) {
                 $basketItem = new BasketItem([
                     'quantity' => $quantity,
                 ]);
                 $basketItem->basket()->associate($this);
-                $basketItem->product()->associate($productVariant->item);
-                $basketItem->variant()->associate($productVariant);
+                $basketItem->item()->associate($variant);
                 $this->items()->save($basketItem);
                 $this->save();
             } else {
@@ -78,20 +77,17 @@ class Basket extends Model
         return $this;
     }
 
-    public function remove(BasketItemVariantContract $productVariant, ?int $quantity = 1): Basket
+    public function remove(ProductVariantContract $variant, ?int $quantity = 1): Basket
     {
         if (!config('ctrlc.basket.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from basket is disabled');
         }
 
-        //todo validate quantity
-
-        \DB::transaction(function () use ($productVariant, $quantity) {
-            $basketItem = $this->findBasketItemFromVariant($productVariant);
+        \DB::transaction(function () use ($variant, $quantity) {
+            $basketItem = $this->getBasketItem($variant);
             if ($basketItem->quantity === $quantity) {
                 $basketItem->delete();
             }
-
             if ($basketItem->quantity >= ($quantity + 1)) {
                 $basketItem->quantity -= $quantity;
                 $basketItem->save();
@@ -103,13 +99,11 @@ class Basket extends Model
         return $this;
     }
 
-    private function findBasketItemFromVariant(BasketItemVariantContract $productVariant)
+    private function getBasketItem(ProductVariantContract $variant)
     {
         return $this->items()
-            ->where('product_id', $productVariant->item->id)
-            ->where('product_type', $productVariant->item::class)
-            ->where('variant_id', $productVariant->id)
-            ->where('variant_type', $productVariant::class)
+            ->where('item_id', $variant->getKey())
+            ->where('item_type', $variant::class)
             ->limit(1)
             ->get()
             ->first();

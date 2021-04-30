@@ -4,9 +4,11 @@ namespace Ctrlc\Basket\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\belongsTo;
 
-interface BasketItemVariantContract
+interface ProductVariantContract
 {
     public function getPriceAttribute(): int;
+
+    public function getAvailableQuantityAttribute(): int;
 
     public function item(): belongsTo;
 }

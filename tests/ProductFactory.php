@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
-namespace Ctrlc\Basket\Database\Factories;
 
-use Ctrlc\Basket\Models\Product;
+namespace Ctrlc\Basket\Tests;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory

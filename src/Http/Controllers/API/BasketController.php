@@ -2,7 +2,7 @@
 
 namespace Ctrlc\Basket\Http\Controllers\API;
 
-use Ctrlc\Basket\Contracts\BasketItemVariantContract;
+use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Facades\Basket;
 use Ctrlc\Basket\Resources\BasketResource;
 use Illuminate\Routing\Controller;
@@ -15,10 +15,10 @@ class BasketController extends Controller
     }
 
     //todo validate adding
-    public function add(BasketItemVariantContract $productVariant)
+    public function add(ProductVariantContract $variant)
     {
         try {
-            Basket::add($productVariant);
+            Basket::add($variant);
 
             return response()->json(new BasketResource(Basket::getFacadeRoot()));
         } catch (\Throwable $e) {
@@ -27,10 +27,10 @@ class BasketController extends Controller
     }
 
     //todo validate removing
-    public function remove(BasketItemVariantContract $productVariant)
+    public function remove(ProductVariantContract $variant)
     {
         try {
-            Basket::remove($productVariant);
+            Basket::remove($variant);
 
             return response()->json(new BasketResource(Basket::getFacadeRoot()));
         } catch (\Throwable $e) {

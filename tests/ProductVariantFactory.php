@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
-namespace Ctrlc\Basket\Database\Factories;
 
-use Ctrlc\Basket\Models\ProductVariant;
+namespace Ctrlc\Basket\Tests;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductVariantFactory extends Factory
@@ -13,6 +13,7 @@ class ProductVariantFactory extends Factory
         return [
             'name' => $this->faker->colorName,
             'price' => random_int(100, 5000),
+            'quantity' => 1
         ];
     }
 }

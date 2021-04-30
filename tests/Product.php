@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Ctrlc\Basket\Models;
+namespace Ctrlc\Basket\Tests;
 
 use Ctrlc\Basket\Contracts\BasketItemContract;
-use Ctrlc\Basket\Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,13 +24,9 @@ class Product extends Model implements BasketItemContract
         return $this->hasMany(ProductVariant::class);
     }
 
-    public function product(): Model
-    {
-        return $this;
-    }
-
     protected static function newFactory(): ProductFactory
     {
         return new ProductFactory();
     }
+
 }

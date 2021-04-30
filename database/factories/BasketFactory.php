@@ -11,7 +11,7 @@ class BasketFactory extends Factory
     public function definition()
     {
         return [
-            'currency' => 'GBP',
+            'name' => $this->faker->colorName . ' basket',
         ];
     }
 }

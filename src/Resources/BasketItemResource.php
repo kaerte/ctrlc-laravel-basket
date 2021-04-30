@@ -11,8 +11,8 @@ class BasketItemResource extends JsonResource
         return [
             'id' => $this->id,
             'quantity' => $this->quantity,
-            'price' => ($this->variant->price) * $this->quantity,
-            'name' => $this->variant->name,
+            'price' => ($this->item->price) * $this->quantity,
+            'name' => $this->item->name,
             'metaData' => $this->metaData,
         ];
     }

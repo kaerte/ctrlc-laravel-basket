@@ -3,7 +3,7 @@
 namespace Ctrlc\Basket\Tests\Feature;
 
 use Ctrlc\Basket\Facades\Basket;
-use Ctrlc\Basket\Models\Product;
+use Ctrlc\Basket\Tests\Product;
 use Ctrlc\Basket\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
