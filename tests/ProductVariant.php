@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests;
 
@@ -14,7 +16,7 @@ class ProductVariant extends Model implements ProductVariantContract
 
     protected $casts = [
         'price' => 'int',
-        'quantity' => 'int'
+        'quantity' => 'int',
     ];
 
     public function item(): belongsTo

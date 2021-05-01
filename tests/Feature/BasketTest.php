@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests\Feature;
 
@@ -66,7 +68,7 @@ class BasketTest extends TestCase
     public function test_remove_all_from_basket(): void
     {
         $variant = $this->product->variant;
-        $basket =  Basket::add($variant)
+        $basket = Basket::add($variant)
             ->add($variant)
             ->remove($variant, 2);
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests;
 
@@ -28,5 +30,4 @@ class Product extends Model implements BasketItemContract
     {
         return new ProductFactory();
     }
-
 }

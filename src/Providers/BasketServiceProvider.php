@@ -16,7 +16,7 @@ class BasketServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(dirname(__DIR__, 2) . '/config/config.php', 'ctrlc.basket');
+        $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.basket');
         $this->app->singleton('basket', fn () => (new BasketService())->basket);
     }
 
@@ -28,7 +28,7 @@ class BasketServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom([
-            dirname(__DIR__, 2) . '/database/migrations/2020_01_11_125853_create_baskets.php',
+            dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_baskets.php',
         ]);
         $this->loadRoutesFrom(dirname(__DIR__, 2).'/routes/api.php');
 

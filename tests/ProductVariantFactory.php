@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests;
 
@@ -13,7 +15,7 @@ class ProductVariantFactory extends Factory
         return [
             'name' => $this->faker->colorName,
             'price' => random_int(100, 5000),
-            'quantity' => 1
+            'quantity' => 1,
         ];
     }
 }

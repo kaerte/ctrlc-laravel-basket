@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Services;
 
@@ -6,7 +8,7 @@ use Ctrlc\Basket\Models\Basket;
 
 class BasketService
 {
-    public Basket|null $basket = null;
+    public Basket | null $basket = null;
 
     public array $items = [];
 

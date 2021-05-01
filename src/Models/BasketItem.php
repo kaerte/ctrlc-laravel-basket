@@ -1,8 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Models;
 
-use Ctrlc\Basket\Contracts\BasketItemContract;
 use Ctrlc\Basket\Database\Factories\BasketItemFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +31,7 @@ class BasketItem extends Model
         return $this->belongsTo(Basket::class);
     }
 
-    public function getPriceAttribute(): float|int
+    public function getPriceAttribute(): float | int
     {
         return $this->item->price;
     }
