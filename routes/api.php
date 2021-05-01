@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Ctrlc\Basket\Http\Controllers\API\BasketController;
 use Illuminate\Support\Facades\Route;

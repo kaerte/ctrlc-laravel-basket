@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ctrlc\Basket\Models;
 
@@ -32,7 +34,7 @@ class Basket extends Model
         return $this->hasMany(BasketItem::class);
     }
 
-    public function getTotalAttribute(): float|int
+    public function getTotalAttribute(): float | int
     {
         $total = 0;
         foreach ($this->items as $item) {
@@ -42,7 +44,7 @@ class Basket extends Model
         return $total;
     }
 
-    public function total(): float|int
+    public function total(): float | int
     {
         return $this->getTotalAttribute();
     }
@@ -59,7 +61,7 @@ class Basket extends Model
 
             $basketItem = $this->getBasketItem($variant);
 
-            if (!$basketItem) {
+            if (! $basketItem) {
                 $basketItem = new BasketItem([
                     'quantity' => $quantity,
                 ]);
@@ -79,7 +81,7 @@ class Basket extends Model
 
     public function remove(ProductVariantContract $variant, ?int $quantity = 1): Basket
     {
-        if (!config('ctrlc.basket.allow_remove')) {
+        if (! config('ctrlc.basket.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from basket is disabled');
         }
 

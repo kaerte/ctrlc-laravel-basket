@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Ctrlc\Basket\Database\Factories;
 
 use Ctrlc\Basket\Models\Basket;
@@ -11,7 +14,7 @@ class BasketFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->colorName . ' basket',
+            'name' => $this->faker->colorName.' basket',
         ];
     }
 }
