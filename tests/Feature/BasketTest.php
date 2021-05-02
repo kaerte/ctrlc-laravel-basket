@@ -63,7 +63,7 @@ class BasketTest extends TestCase
 
     public function test_remove_all_from_basket(): void
     {
-        $basket =  Basket::add($this->productVariant)
+        $basket = Basket::add($this->productVariant)
             ->add($this->productVariant)
             ->remove($this->productVariant, 2);
 

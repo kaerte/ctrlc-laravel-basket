@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use Ctrlc\Basket\Tests\Product;
 use Illuminate\Database\Migrations\Migration;
