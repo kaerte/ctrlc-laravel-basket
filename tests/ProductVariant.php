@@ -17,11 +17,12 @@ class ProductVariant extends Model implements ProductVariantContract
     protected $casts = [
         'price' => 'int',
         'quantity' => 'int',
+        'default' => 'int',
     ];
 
-    public function item(): belongsTo
+    public function product(): belongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class);
     }
 
     public function getPriceAttribute(): int

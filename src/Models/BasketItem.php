@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Models;
 
-use Ctrlc\Basket\Database\Factories\BasketItemFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -12,8 +11,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class BasketItem extends Model
 {
     protected $casts = [
-        'product_id' => 'int',
-        'variant_id' => 'int',
         'quantity' => 'int',
     ];
 
@@ -34,10 +31,5 @@ class BasketItem extends Model
     public function getPriceAttribute(): float | int
     {
         return $this->item->price;
-    }
-
-    protected static function newFactory()
-    {
-        return new BasketItemFactory();
     }
 }

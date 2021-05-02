@@ -12,5 +12,5 @@ interface ProductVariantContract
 
     public function getAvailableQuantityAttribute(): int;
 
-    public function item(): belongsTo;
+    public function product(): belongsTo;
 }

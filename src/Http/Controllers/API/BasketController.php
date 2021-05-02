@@ -16,7 +16,6 @@ class BasketController extends Controller
         return response()->json(new BasketResource(Basket::getFacadeRoot()));
     }
 
-    //todo validate adding
     public function add(ProductVariantContract $variant)
     {
         try {
@@ -28,7 +27,6 @@ class BasketController extends Controller
         }
     }
 
-    //todo validate removing
     public function remove(ProductVariantContract $variant)
     {
         try {

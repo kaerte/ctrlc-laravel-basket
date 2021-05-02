@@ -39,7 +39,7 @@ class ApiBasketTest extends TestCase
     public function test_api_get_basket(): void
     {
         $product = $this->product;
-        Basket::add($product->variant);
+        Basket::add($product->defaultVariant);
 
         $request = $this->get(route('api.basket.get'));
         $request->assertJsonStructure([
