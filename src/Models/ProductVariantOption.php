@@ -13,6 +13,8 @@ class ProductVariantOption extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'value'];
+
     public function variants(): BelongsToMany
     {
         return $this->belongsToMany(ProductVariant::class);
