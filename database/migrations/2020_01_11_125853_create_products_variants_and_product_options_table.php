@@ -36,8 +36,8 @@ class CreateProductsVariantsAndProductOptionsTable extends Migration
         Schema::create('product_variant_product_variant_option', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('product_variant_id')->index();
-            $table->unsignedBigInteger('product_variant_option_id')->index();
+            $table->unsignedBigInteger('product_variant_id')->index('pv_pvo_pv_id');
+            $table->unsignedBigInteger('product_variant_option_id')->index('pv_pvo_pvo_id');
         });
     }
 
