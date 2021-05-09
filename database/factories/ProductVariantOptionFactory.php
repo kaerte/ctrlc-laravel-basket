@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Basket\Database\Factories;
 
+use Ctrlc\Basket\Models\ProductVariantOption;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductVariantOptionFactory extends Factory

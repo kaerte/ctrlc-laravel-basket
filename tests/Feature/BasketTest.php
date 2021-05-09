@@ -6,15 +6,15 @@ namespace Ctrlc\Basket\Tests\Feature;
 
 use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Facades\Basket;
-use Ctrlc\Basket\Tests\Product;
 use Ctrlc\Basket\Tests\TestCase;
+use Ctrlc\Basket\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BasketTest extends TestCase
 {
     use RefreshDatabase;
 
-    public Product $product;
+    public User $productable;
 
     public ProductVariantContract $productVariant;
 
@@ -22,18 +22,18 @@ class BasketTest extends TestCase
     {
         parent::setUp();
 
-        $this->product = Product::factory()
+        $this->productable = User::factory()
             ->hasVariants(1, [
                 'default' => 1,
             ])
             ->create();
 
-        $this->productVariant = $this->product->defaultVariant;
+        $this->productVariant = $this->productable->defaultVariant;
     }
 
     public function test_product_creation(): void
     {
-        self::assertInstanceOf(Product::class, $this->productVariant->product);
+        self::assertInstanceOf(User::class, $this->productVariant->productable);
     }
 
     public function test_add_to_basket_total(): void

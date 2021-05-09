@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Basket\Models;
 
+use Ctrlc\Basket\Database\Factories\ProductVariantOptionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

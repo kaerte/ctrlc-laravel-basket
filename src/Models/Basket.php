@@ -57,7 +57,6 @@ class Basket extends Model
 
         \DB::transaction(function () use ($variant, $quantity) {
             $this->fresh('items.item');
-            $variant->load('product');
 
             $basketItem = $this->getBasketItem($variant);
 

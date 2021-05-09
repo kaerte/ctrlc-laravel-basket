@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Basket\Models;
 
 use Ctrlc\Basket\Contracts\ProductVariantContract;
+use Ctrlc\Basket\Database\Factories\ProductVariantFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\belongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ProductVariant extends Model implements ProductVariantContract
 {
@@ -21,9 +22,9 @@ class ProductVariant extends Model implements ProductVariantContract
         'default' => 'int',
     ];
 
-    public function product(): belongsTo
+    public function productable(): MorphTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->morphTo();
     }
 
     public function options(): BelongsToMany

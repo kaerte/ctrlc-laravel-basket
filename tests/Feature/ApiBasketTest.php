@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Ctrlc\Basket\Tests\Feature;
 
 use Ctrlc\Basket\Facades\Basket;
-use Ctrlc\Basket\Tests\Product;
 use Ctrlc\Basket\Tests\TestCase;
+use Ctrlc\Basket\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiBasketTest extends TestCase
 {
     use RefreshDatabase;
 
-    public Product $product;
+    public User $productable;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->product = Product::factory()
+        $this->productable = User::factory()
             ->hasVariants(1, [
                 'default' => 1,
             ])
@@ -38,8 +38,7 @@ class ApiBasketTest extends TestCase
 
     public function test_api_get_basket(): void
     {
-        $product = $this->product;
-        Basket::add($product->defaultVariant);
+        Basket::add($this->productable->defaultVariant);
 
         $request = $this->get(route('api.basket.get'));
         $request->assertJsonStructure([

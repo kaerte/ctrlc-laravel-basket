@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Contracts;
 
-use Illuminate\Database\Eloquent\Relations\belongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 interface ProductVariantContract
 {
@@ -12,5 +12,5 @@ interface ProductVariantContract
 
     public function getAvailableQuantityAttribute(): int;
 
-    public function product(): belongsTo;
+    public function productable(): MorphTo;
 }

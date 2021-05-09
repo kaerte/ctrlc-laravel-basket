@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests\Feature;
 
-use Ctrlc\Basket\Tests\Product;
-use Ctrlc\Basket\Tests\ProductVariant;
-use Ctrlc\Basket\Tests\ProductVariantOption;
+use Ctrlc\Basket\Models\ProductVariant;
+use Ctrlc\Basket\Models\ProductVariantOption;
 use Ctrlc\Basket\Tests\TestCase;
+use Ctrlc\Basket\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProductTest extends TestCase
+class ProductableTest extends TestCase
 {
     use RefreshDatabase;
 
-    public Product $product;
+    public User $productable;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->product = Product::factory()
+        $this->productable = User::factory()
             ->has(
                 ProductVariant::factory()
                     ->has(
@@ -34,16 +34,16 @@ class ProductTest extends TestCase
 
     public function test_product_has_variant()
     {
-        self::assertCount(1, $this->product->variants);
+        self::assertCount(1, $this->productable->variants);
     }
 
     public function test_product_has_variant_options()
     {
-        self::assertCount(3, $this->product->variants->first()->options);
+        self::assertCount(3, $this->productable->variants->first()->options);
     }
 
     public function test_option_has_variant()
     {
-        self::assertCount(1, $this->product->variants->first()->options->first()->variants);
+        self::assertCount(1, $this->productable->variants->first()->options->first()->variants);
     }
 }
