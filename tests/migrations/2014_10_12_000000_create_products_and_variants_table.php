@@ -18,19 +18,33 @@ class CreateProductsAndVariantsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->timestamps();
+            $table->string('name');
         });
 
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->unsignedTinyInteger('default')->default(0);
             $table->string('name');
             $table->string('img')->nullable();
             $table->integer('quantity')->unsigned();
             $table->bigInteger('price')->nullable()->unsigned()->comment('NULL = free');
             $table->foreignIdFor(Product::class)->constrained();
+        });
+
+        Schema::create('product_variant_options', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
+            $table->string('name');
+            $table->string('value');
+        });
+
+        Schema::create('product_variant_product_variant_option', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->unsignedBigInteger('product_variant_id')->index();
+            $table->unsignedBigInteger('product_variant_option_id')->index();
         });
     }
 
@@ -41,7 +55,9 @@ class CreateProductsAndVariantsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('product_variant_product_variant_option');
         Schema::dropIfExists('product_variants');
+        Schema::dropIfExists('product_variant_options');
         Schema::dropIfExists('products');
     }
 }

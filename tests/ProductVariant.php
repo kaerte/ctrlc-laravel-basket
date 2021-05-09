@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductVariant extends Model implements ProductVariantContract
 {
@@ -23,6 +24,11 @@ class ProductVariant extends Model implements ProductVariantContract
     public function product(): belongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function options(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductVariantOption::class);
     }
 
     public function getPriceAttribute(): int
