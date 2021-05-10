@@ -32,7 +32,7 @@ class ApiBasketTest extends TestCase
         $request->assertJsonStructure([
             'id',
             'total',
-            'items',
+            'contents',
         ]);
     }
 
@@ -44,7 +44,7 @@ class ApiBasketTest extends TestCase
         $request->assertJsonStructure([
             'id',
             'total',
-            'items' => [
+            'contents' => [
                 0 => [
                     'id',
                     'quantity',
