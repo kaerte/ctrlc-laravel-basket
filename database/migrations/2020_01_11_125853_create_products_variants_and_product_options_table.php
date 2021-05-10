@@ -22,7 +22,7 @@ class CreateProductsVariantsAndProductOptionsTable extends Migration
             $table->unsignedTinyInteger('default')->default(0);
             $table->string('name');
             $table->string('img')->nullable();
-            $table->integer('quantity')->unsigned();
+            $table->integer('quantity')->unsigned()->nullable();
             $table->bigInteger('price')->nullable()->unsigned()->comment('NULL = free');
         });
 
