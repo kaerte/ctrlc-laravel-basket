@@ -16,6 +16,13 @@ class ProductVariant extends Model implements ProductVariantContract
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'price',
+        'quantity',
+        'default',
+    ];
+
     protected $casts = [
         'price' => 'int',
         'quantity' => 'int',
