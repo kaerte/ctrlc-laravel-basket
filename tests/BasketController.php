@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Http\Controllers\API;
+namespace Ctrlc\Basket\Tests;
 
 use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Facades\Basket;
