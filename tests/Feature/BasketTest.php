@@ -49,7 +49,7 @@ class BasketTest extends TestCase
         $basket = Basket::add($this->productVariant)
             ->add($this->productVariant);
 
-        self::assertEquals(2, $basket->contents->first()->quantity);
+        self::assertEquals(2, $basket->items->first()->quantity);
     }
 
     public function test_remove_from_basket(): void
@@ -58,7 +58,7 @@ class BasketTest extends TestCase
             ->add($this->productVariant)
             ->remove($this->productVariant);
 
-        self::assertEquals(1, $basket->contents->first()->quantity);
+        self::assertEquals(1, $basket->items->first()->quantity);
     }
 
     public function test_remove_all_from_basket(): void
@@ -67,7 +67,7 @@ class BasketTest extends TestCase
             ->add($this->productVariant)
             ->remove($this->productVariant, 2);
 
-        self::assertEmpty($basket->contents);
+        self::assertEmpty($basket->items);
         self::assertEquals(0, Basket::total());
     }
 }

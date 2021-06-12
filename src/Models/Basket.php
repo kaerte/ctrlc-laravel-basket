@@ -31,7 +31,7 @@ class Basket extends Model
         return $this->morphTo();
     }
 
-    public function contents(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(BasketItem::class);
     }
@@ -39,7 +39,7 @@ class Basket extends Model
     public function getTotalAttribute(): float | int
     {
         $total = 0;
-        foreach ($this->contents as $item) {
+        foreach ($this->items as $item) {
             $total += $item->price * $item->quantity;
         }
 
@@ -58,7 +58,7 @@ class Basket extends Model
         }
 
         \DB::transaction(function () use ($variant, $quantity) {
-            $this->fresh('contents.item');
+            $this->fresh('items.item');
 
             $basketItem = $this->getBasketItem($variant);
 
@@ -68,14 +68,14 @@ class Basket extends Model
                 ]);
                 $basketItem->basket()->associate($this);
                 $basketItem->item()->associate($variant);
-                $this->contents()->save($basketItem);
+                $this->items()->save($basketItem);
                 $this->save();
             } else {
                 $basketItem->quantity += $quantity;
                 $basketItem->save();
             }
         }, 5);
-        $this->load('contents');
+        $this->load('items');
 
         return $this;
     }
@@ -83,7 +83,7 @@ class Basket extends Model
     public function remove(ProductVariantContract $variant, ?int $quantity = 1): Basket
     {
         if (! config('ctrlc.basket.allow_remove')) {
-            throw new \InvalidArgumentException('Removing contents from basket is disabled');
+            throw new \InvalidArgumentException('Removing items from basket is disabled');
         }
 
         \DB::transaction(function () use ($variant, $quantity) {
@@ -97,14 +97,14 @@ class Basket extends Model
             }
         }, 5);
 
-        $this->load('contents');
+        $this->load('items');
 
         return $this;
     }
 
     private function getBasketItem(ProductVariantContract $variant)
     {
-        return $this->contents()
+        return $this->items()
             ->where('item_id', $variant->getKey())
             ->where('item_type', $variant::class)
             ->limit(1)
