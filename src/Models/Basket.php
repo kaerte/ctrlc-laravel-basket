@@ -110,6 +110,20 @@ class Basket extends Model
             ->first();
     }
 
+    public function lock(): Basket
+    {
+        $this->locked = true;
+        $this->locked_at = now();
+        return $this;
+    }
+
+    public function unlock(): Basket
+    {
+        $this->locked = false;
+        $this->locked_at = null;
+        return $this;
+    }
+
     protected static function newFactory(): BasketFactory
     {
         return BasketFactory::new();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests\Feature;
 
+use Carbon\Carbon;
 use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Facades\Basket;
 use Ctrlc\Basket\Tests\TestCase;
@@ -69,5 +70,28 @@ class BasketTest extends TestCase
 
         self::assertEmpty($basket->contents);
         self::assertEquals(0, Basket::total());
+    }
+
+    public function test_locked(): void
+    {
+        $basket = Basket::add($this->productVariant)
+            ->add($this->productVariant)
+            ->remove($this->productVariant, 2)
+            ->lock();
+
+        self::assertTrue($basket->locked);
+        self::assertInstanceOf(Carbon::class, $basket->locked_at);
+    }
+
+    public function test_unlocked(): void
+    {
+        $basket = Basket::add($this->productVariant)
+            ->add($this->productVariant)
+            ->remove($this->productVariant, 2)
+            ->lock()
+            ->unlock();
+
+        self::assertFalse($basket->locked);
+        self::assertNull($basket->locked_at);
     }
 }

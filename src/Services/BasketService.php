@@ -16,20 +16,21 @@ class BasketService
 
     public function __construct()
     {
-        $this->basket = $this->getBasket();
+        $this->getBasket();
     }
 
+    //todo implement basket lock, this method should return new basket if basket was locked
     protected function getBasket()
     {
-        $this->createBasket();
+        $basket = $this->createBasket();
 
-        return $this->basket;
+        return $basket;
     }
 
-    protected function createBasket()
+    protected function createBasket(): ?Basket
     {
         $this->basket = new Basket();
         $this->basket->save();
-        $this->basket = $this->basket->fresh();
+        return $this->basket->fresh();
     }
 }

@@ -18,17 +18,19 @@ class CreateBaskets extends Migration
     {
         Schema::create('baskets', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->nullableMorphs('basketable');
             $table->timestamps();
+            $table->string('name')->nullable();
+            $table->boolean('locked')->default(false);
+            $table->timestamp('locked_at')->nullable();
+            $table->nullableMorphs('basketable');
         });
 
         Schema::create('basket_items', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->morphs('item');
             $table->foreignIdFor(Basket::class)->constrained();
             $table->unsignedMediumInteger('quantity')->default(0);
-            $table->timestamps();
         });
     }
 
