@@ -18,6 +18,8 @@ class BasketItem extends Model
         'quantity',
     ];
 
+    protected $with = ['item'];
+
     public function item(): MorphTo
     {
         return $this->morphTo();

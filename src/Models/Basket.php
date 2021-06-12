@@ -19,6 +19,8 @@ class Basket extends Model
 
     protected $appends = ['total'];
 
+    protected $with = ['basketable'];
+
     public function instance(): Basket
     {
         return $this;

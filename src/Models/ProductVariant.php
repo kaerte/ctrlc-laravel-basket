@@ -29,6 +29,8 @@ class ProductVariant extends Model implements ProductVariantContract
         'default' => 'int',
     ];
 
+    protected $with = ['productable'];
+
     public function productable(): MorphTo
     {
         return $this->morphTo();
