@@ -29,9 +29,9 @@ class BasketableTest extends TestCase
 
     public function test_assign_basket_to_basketable(): void
     {
-        $basketable = Basket::getFacadeRoot();
+        $basket = Basket::getFacadeRoot();
 
-        $this->basketable->basket()->save($basketable);
+        $this->basketable->basket()->save($basket);
 
         self::assertTrue($this->basketable->is($this->basketable->basket->basketable));
     }
