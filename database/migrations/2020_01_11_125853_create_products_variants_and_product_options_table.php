@@ -25,20 +25,6 @@ class CreateProductsVariantsAndProductOptionsTable extends Migration
             $table->integer('quantity')->unsigned()->nullable();
             $table->bigInteger('price')->nullable()->unsigned()->comment('NULL = free');
         });
-
-        Schema::create('product_variant_options', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->string('value');
-        });
-
-        Schema::create('product_variant_product_variant_option', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->unsignedBigInteger('product_variant_id')->index('pv_pvo_pv_id');
-            $table->unsignedBigInteger('product_variant_option_id')->index('pv_pvo_pvo_id');
-        });
     }
 
     /**
@@ -48,8 +34,6 @@ class CreateProductsVariantsAndProductOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_variant_product_variant_option');
-        Schema::dropIfExists('product_variant_options');
         Schema::dropIfExists('product_variants');
     }
 }

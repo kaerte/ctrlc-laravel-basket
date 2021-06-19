@@ -38,11 +38,6 @@ class ProductVariant extends Model implements ProductVariantContract
         return $this->morphTo();
     }
 
-    public function options(): BelongsToMany
-    {
-        return $this->belongsToMany(ProductVariantOption::class);
-    }
-
     public function getPriceAttribute(): int
     {
         return (int) $this->attributes['price'];
