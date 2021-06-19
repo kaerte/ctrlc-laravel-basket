@@ -7,9 +7,12 @@ namespace Ctrlc\Basket\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Plank\Metable\Metable;
 
 class BasketItem extends Model
 {
+    use Metable;
+
     protected $casts = [
         'quantity' => 'int',
     ];
@@ -18,7 +21,7 @@ class BasketItem extends Model
         'quantity',
     ];
 
-    protected $with = ['item'];
+    protected $with = ['item', 'meta'];
 
     public function item(): MorphTo
     {

@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "php": "^8.0.1"
+        "php": "^8.0.1",
+        "plank/laravel-metable": "^5.0"
     },
     "autoload": {
         "psr-4": {

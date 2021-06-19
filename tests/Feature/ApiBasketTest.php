@@ -50,7 +50,7 @@ class ApiBasketTest extends TestCase
                     'quantity',
                     'price',
                     'name',
-                    'metaData',
+                    'metadata',
                 ],
             ],
         ]);

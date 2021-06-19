@@ -17,7 +17,7 @@ class BasketServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.basket');
-        $this->app->singleton('basket', fn () => (new BasketService())->basket);
+        $this->app->singleton('basket', fn () => new BasketService());
     }
 
     /**

@@ -36,6 +36,12 @@ class BasketTest extends TestCase
         self::assertInstanceOf(User::class, $this->productVariant->productable);
     }
 
+    public function test_add_to_basket(): void
+    {
+        Basket::add($this->productVariant);
+        self::assertEquals(1, Basket::items()->count());
+    }
+
     public function test_add_to_basket_total(): void
     {
         Basket::add($this->productVariant)

@@ -13,7 +13,7 @@ class BasketController extends Controller
 {
     public function getBasket()
     {
-        return response()->json(new BasketResource(Basket::getFacadeRoot()));
+        return response()->json(new BasketResource(Basket::getBasket()));
     }
 
     public function add(ProductVariantContract $variant)
@@ -21,7 +21,7 @@ class BasketController extends Controller
         try {
             Basket::add($variant);
 
-            return response()->json(new BasketResource(Basket::getFacadeRoot()));
+            return response()->json(new BasketResource(Basket::getBasket()));
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), 400);
         }
@@ -32,7 +32,7 @@ class BasketController extends Controller
         try {
             Basket::remove($variant);
 
-            return response()->json(new BasketResource(Basket::getFacadeRoot()));
+            return response()->json(new BasketResource(Basket::getBasket()));
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), 400);
         }

@@ -6,6 +6,7 @@ namespace Ctrlc\Basket\Models;
 
 use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Database\Factories\BasketFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,21 +47,21 @@ class Basket extends Model
         return $total;
     }
 
-    public function total(): float | int
+    public function total(): int
     {
         return $this->getTotalAttribute();
     }
 
-    public function add(ProductVariantContract $variant, ?int $quantity = 1): Basket
+    public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Basket
     {
         if ($variant->getAvailableQuantityAttribute() < $quantity) {
             throw new \InvalidArgumentException('Product of this quantity is not in stock');
         }
 
-        \DB::transaction(function () use ($variant, $quantity) {
+        \DB::transaction(function () use ($variant, $quantity, $meta) {
             $this->fresh('items.item');
 
-            $basketItem = $this->getBasketItem($variant);
+            $basketItem = $this->getBasketItem($variant, $meta);
 
             if (! $basketItem) {
                 $basketItem = new BasketItem([
@@ -80,14 +81,14 @@ class Basket extends Model
         return $this;
     }
 
-    public function remove(ProductVariantContract $variant, ?int $quantity = 1): Basket
+    public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Basket
     {
         if (! config('ctrlc.basket.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from basket is disabled');
         }
 
-        \DB::transaction(function () use ($variant, $quantity) {
-            $basketItem = $this->getBasketItem($variant);
+        \DB::transaction(function () use ($variant, $quantity, $meta) {
+            $basketItem = $this->getBasketItem($variant, $meta);
             if ($basketItem->quantity === $quantity) {
                 $basketItem->delete();
             }
@@ -102,11 +103,16 @@ class Basket extends Model
         return $this;
     }
 
-    private function getBasketItem(ProductVariantContract $variant)
+    private function getBasketItem(ProductVariantContract $variant, array $meta)
     {
         return $this->items()
             ->where('item_id', $variant->getKey())
             ->where('item_type', $variant::class)
+            ->when(!empty($meta), function (Builder $query) use ($meta) {
+                foreach ($meta as $key => $value) {
+                    $query->whereMeta($key, $value)->get();
+                }
+            })
             ->limit(1)
             ->get()
             ->first();

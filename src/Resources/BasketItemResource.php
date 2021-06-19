@@ -15,7 +15,7 @@ class BasketItemResource extends JsonResource
             'quantity' => $this->quantity,
             'price' => ($this->item->price) * $this->quantity,
             'name' => $this->item->name,
-            'metaData' => $this->metaData,
+            'metadata' => $this->getAllMeta(),
         ];
     }
 }
