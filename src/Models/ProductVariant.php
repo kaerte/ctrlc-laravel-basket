@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Plank\Metable\Metable;
 
 class ProductVariant extends Model implements ProductVariantContract
 {
     use HasFactory;
+    use Metable;
 
     protected $fillable = [
         'name',
