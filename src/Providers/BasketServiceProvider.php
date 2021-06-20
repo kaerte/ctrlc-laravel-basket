@@ -29,7 +29,7 @@ class BasketServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom([
             dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_baskets.php',
-            dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_products_variants_and_product_options_table.php',
+            dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_products_variants_table.php',
         ]);
 
         BasketItem::observe(BasketItemObserver::class);
