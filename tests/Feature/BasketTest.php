@@ -18,6 +18,8 @@ class BasketTest extends TestCase
 
     public ProductVariantContract $productVariant;
 
+    private int $variantQuantity = 10;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -25,7 +27,7 @@ class BasketTest extends TestCase
         $this->productable = User::factory()
             ->hasVariants(1, [
                 'default' => 1,
-                'quantity' => 10,
+                'quantity' => $this->variantQuantity,
             ])
             ->create();
 
@@ -87,12 +89,26 @@ class BasketTest extends TestCase
     public function test_add_over_quantity_in_multiple_operations_to_basket(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        Basket::add($this->productVariant, 2)
-            ->add($this->productVariant, 2)
-            ->remove($this->productVariant, 2)
-            ->remove($this->productVariant, 2)
-            ->add($this->productVariant, 6)
-            ->add($this->productVariant, 6);
+        Basket::add($this->productVariant, 1)
+            ->add($this->productVariant, 1)
+            ->remove($this->productVariant, 1)
+            ->add($this->productVariant, $this->variantQuantity + 1);
     }
 
+    public function test_add_unlimited_quantity_to_basket(): void
+    {
+        $this->productable = User::factory()
+            ->hasVariants(1, [
+                'default' => 1,
+                'quantity' => null,
+            ])
+            ->create();
+
+        $this->productVariant = $this->productable->defaultVariant;
+
+        Basket::add($this->productVariant, 1)
+            ->add($this->productVariant, 1);
+
+        self::assertEquals(2, Basket::items()->first()->quantity);
+    }
 }

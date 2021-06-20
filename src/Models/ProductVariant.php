@@ -9,7 +9,6 @@ use Ctrlc\Basket\Database\Factories\ProductVariantFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Plank\Metable\Metable;
 
@@ -43,7 +42,7 @@ class ProductVariant extends Model implements ProductVariantContract
         return (int) $this->attributes['price'];
     }
 
-    public function getAvailableQuantityAttribute(): int
+    public function getAvailableQuantityAttribute(): int|null
     {
         return $this->quantity;
     }
