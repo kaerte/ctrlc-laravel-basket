@@ -54,16 +54,16 @@ class Basket extends Model
 
     public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Basket
     {
-        if ($variant->getAvailableQuantityAttribute() < $quantity) {
+        $this->fresh('items.item');
+        $basketItem = $this->getBasketItem($variant, $meta);
+        $basketQuantity = (int) ($basketItem?->quantity ?? 0);
+
+        if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity + $basketQuantity)) {
             throw new \InvalidArgumentException('Product of this quantity is not in stock');
         }
 
-        \DB::transaction(function () use ($variant, $quantity, $meta) {
-            $this->fresh('items.item');
-
-            $basketItem = $this->getBasketItem($variant, $meta);
-
-            if (! $basketItem) {
+        \DB::transaction(function () use ($variant, $quantity, $basketItem) {
+            if (!$basketItem) {
                 $basketItem = new BasketItem([
                     'quantity' => $quantity,
                 ]);
@@ -76,6 +76,7 @@ class Basket extends Model
                 $basketItem->save();
             }
         }, 5);
+
         $this->load('items');
 
         return $this;

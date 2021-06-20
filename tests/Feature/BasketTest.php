@@ -25,6 +25,7 @@ class BasketTest extends TestCase
         $this->productable = User::factory()
             ->hasVariants(1, [
                 'default' => 1,
+                'quantity' => 10,
             ])
             ->create();
 
@@ -76,4 +77,22 @@ class BasketTest extends TestCase
         self::assertEmpty($basket->items);
         self::assertEquals(0, Basket::total());
     }
+
+    public function test_add_over_quantity_to_basket(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        Basket::add($this->productVariant, 11);
+    }
+
+    public function test_add_over_quantity_in_multiple_operations_to_basket(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        Basket::add($this->productVariant, 2)
+            ->add($this->productVariant, 2)
+            ->remove($this->productVariant, 2)
+            ->remove($this->productVariant, 2)
+            ->add($this->productVariant, 6)
+            ->add($this->productVariant, 6);
+    }
+
 }

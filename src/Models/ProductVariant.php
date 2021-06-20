@@ -45,7 +45,7 @@ class ProductVariant extends Model implements ProductVariantContract
 
     public function getAvailableQuantityAttribute(): int
     {
-        return (int) ($this->quantity || 0);
+        return $this->quantity;
     }
 
     public function scropeDefault($query): Builder
