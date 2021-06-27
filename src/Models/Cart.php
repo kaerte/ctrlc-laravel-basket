@@ -87,7 +87,7 @@ class Cart extends Model implements CartContract
     public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
     {
         if (! config('ctrlc.cart.allow_remove')) {
-            throw new \InvalidArgumentException('Removing items from basket is disabled');
+            throw new \InvalidArgumentException('Removing items from cart is disabled');
         }
 
         \DB::transaction(function () use ($variant, $quantity, $meta) {
@@ -128,10 +128,7 @@ class Cart extends Model implements CartContract
 
     public function get(): Cart
     {
-        $basket = new self();
-        $basket->save();
-
-        return $basket->fresh();
+        return $this->fresh();
     }
 
     public function create(): Cart
