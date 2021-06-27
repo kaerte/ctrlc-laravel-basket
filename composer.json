@@ -39,7 +39,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "CartServiceProvider"
+                "Ctrlc\\Cart\\Providers\\CartServiceProvider"
             ],
             "aliases": {
                 "Cart": "Ctrlc\\Cart\\Facades\\Cart"
