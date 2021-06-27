@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Plank\Metable\Metable;
 
-class BasketItem extends Model
+class CartItem extends Model
 {
     use Metable;
 

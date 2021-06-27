@@ -6,8 +6,8 @@ namespace Ctrlc\Basket\Providers;
 
 use Ctrlc\Basket\Contracts\Cart as CartContract;
 use Ctrlc\Basket\Models\Cart;
-use Ctrlc\Basket\Models\BasketItem;
-use Ctrlc\Basket\Observers\BasketItemObserver;
+use Ctrlc\Basket\Models\CartItem;
+use Ctrlc\Basket\Observers\CartItemObserver;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,6 +45,6 @@ class BasketServiceProvider extends ServiceProvider
             dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_products_variants_table.php',
         ]);
 
-        BasketItem::observe(BasketItemObserver::class);
+        CartItem::observe(CartItemObserver::class);
     }
 }

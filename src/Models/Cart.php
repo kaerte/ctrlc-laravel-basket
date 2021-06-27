@@ -36,7 +36,7 @@ class Cart extends Model implements Cart
 
     public function items(): HasMany
     {
-        return $this->hasMany(BasketItem::class);
+        return $this->hasMany(CartItem::class);
     }
 
     public function getTotalAttribute(): float | int
@@ -66,7 +66,7 @@ class Cart extends Model implements Cart
 
         \DB::transaction(function () use ($variant, $quantity, $basketItem) {
             if (!$basketItem) {
-                $basketItem = new BasketItem([
+                $basketItem = new CartItem([
                     'quantity' => $quantity,
                 ]);
                 $basketItem->basket()->associate($this);
