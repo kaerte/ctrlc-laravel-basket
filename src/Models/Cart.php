@@ -57,25 +57,25 @@ class Cart extends Model implements CartContract
     public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
     {
         $this->fresh('items.item');
-        $basketItem = $this->getCartItem($variant, $meta);
-        $basketQuantity = (int) ($basketItem?->quantity ?? 0);
+        $cartItem = $this->getCartItem($variant, $meta);
+        $cartQuantity = (int) ($cartItem?->quantity ?? 0);
 
-        if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity + $basketQuantity)) {
+        if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity + $cartQuantity)) {
             throw new \InvalidArgumentException('Product of this quantity is not in stock');
         }
 
-        \DB::transaction(function () use ($variant, $quantity, $basketItem) {
-            if (!$basketItem) {
-                $basketItem = new CartItem([
+        \DB::transaction(function () use ($variant, $quantity, $cartItem) {
+            if (!$cartItem) {
+                $cartItem = new CartItem([
                     'quantity' => $quantity,
                 ]);
-                $basketItem->cart()->associate($this);
-                $basketItem->item()->associate($variant);
-                $this->items()->save($basketItem);
+                $cartItem->cart()->associate($this);
+                $cartItem->item()->associate($variant);
+                $this->items()->save($cartItem);
                 $this->save();
             } else {
-                $basketItem->quantity += $quantity;
-                $basketItem->save();
+                $cartItem->quantity += $quantity;
+                $cartItem->save();
             }
         }, 5);
 
@@ -91,13 +91,13 @@ class Cart extends Model implements CartContract
         }
 
         \DB::transaction(function () use ($variant, $quantity, $meta) {
-            $basketItem = $this->getCartItem($variant, $meta);
-            if ($basketItem->quantity === $quantity) {
-                $basketItem->delete();
+            $cartItem = $this->getCartItem($variant, $meta);
+            if ($cartItem->quantity === $quantity) {
+                $cartItem->delete();
             }
-            if ($basketItem->quantity >= ($quantity + 1)) {
-                $basketItem->quantity -= $quantity;
-                $basketItem->save();
+            if ($cartItem->quantity >= ($quantity + 1)) {
+                $cartItem->quantity -= $quantity;
+                $cartItem->save();
             }
         }, 5);
 
@@ -136,10 +136,10 @@ class Cart extends Model implements CartContract
 
     public function create(): Cart
     {
-        $basket = new self();
-        $basket->save();
+        $cart = new self();
+        $cart->save();
 
-        return $basket->fresh();
+        return $cart->fresh();
     }
 
     public function toJson($options = 0): CartResource
