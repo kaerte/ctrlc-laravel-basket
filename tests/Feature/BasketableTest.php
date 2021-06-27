@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests\Feature;
 
-use Ctrlc\Basket\Facades\Basket;
+use Ctrlc\Basket\Contracts\Cart;
 use Ctrlc\Basket\Tests\TestCase;
 use Ctrlc\Basket\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
 
 class BasketableTest extends TestCase
 {
@@ -29,7 +30,8 @@ class BasketableTest extends TestCase
 
     public function test_assign_basket_to_basketable(): void
     {
-        $this->basketable->basket()->save(Basket::getBasket());
+        $basket = App::make(Cart::class);
+        $this->basketable->basket()->save($basket);
 
         self::assertTrue($this->basketable->is($this->basketable->basket->basketable));
     }

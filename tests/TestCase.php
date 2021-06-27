@@ -14,7 +14,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
         $this->loadLaravelMigrations();
-        $this->loadMigrationsFrom(__DIR__.'../migrations');
     }
 
     protected function getPackageProviders($app)
@@ -25,8 +24,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function defineRoutes($router): void
     {
         /** @var $router Router */
-        $router->get('/basket/get', [BasketController::class, 'getBasket'])->name('api.basket.get');
-        $router->post('/basket/add', [BasketController::class, 'add'])->name('api.basket.add');
-        $router->post('/basket/remove', [BasketController::class, 'remove'])->name('api.basket.remove');
+        $router->get('/basket/get', [BasketController::class, 'getBasket'])->name('api_test.basket.get');
+        $router->post('/basket/add', [BasketController::class, 'add'])->name('api_test.basket.add');
+        $router->post('/basket/remove', [BasketController::class, 'remove'])->name('api_test.basket.remove');
     }
 }

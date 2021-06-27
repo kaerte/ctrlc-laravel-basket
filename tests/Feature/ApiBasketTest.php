@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests\Feature;
 
-use Ctrlc\Basket\Facades\Basket;
+use Ctrlc\Basket\Facades\Cart;
 use Ctrlc\Basket\Tests\TestCase;
 use Ctrlc\Basket\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +28,7 @@ class ApiBasketTest extends TestCase
 
     public function test_api_get_empty_basket(): void
     {
-        $request = $this->get(route('api.basket.get'));
+        $request = $this->get(route('api_test.basket.get'));
         $request->assertJsonStructure([
             'id',
             'total',
@@ -38,9 +38,9 @@ class ApiBasketTest extends TestCase
 
     public function test_api_get_basket(): void
     {
-        Basket::add($this->productable->defaultVariant);
+        Cart::add($this->productable->defaultVariant);
 
-        $request = $this->get(route('api.basket.get'));
+        $request = $this->get(route('api_test.basket.get'));
         $request->assertJsonStructure([
             'id',
             'total',

@@ -4,35 +4,34 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Tests;
 
+use Ctrlc\Basket\Contracts\Cart;
 use Ctrlc\Basket\Contracts\ProductVariantContract;
-use Ctrlc\Basket\Facades\Basket;
-use Ctrlc\Basket\Resources\BasketResource;
 use Illuminate\Routing\Controller;
 
 class BasketController extends Controller
 {
-    public function getBasket()
+    public function getBasket(Cart $cart)
     {
-        return response()->json(new BasketResource(Basket::getBasket()));
+        return response()->json($cart->toJson());
     }
 
-    public function add(ProductVariantContract $variant)
+    public function add(Cart $cart, ProductVariantContract $variant)
     {
         try {
-            Basket::add($variant);
+            $cart->add($variant);
 
-            return response()->json(new BasketResource(Basket::getBasket()));
+            return response()->json($cart->toJson());
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), 400);
         }
     }
 
-    public function remove(ProductVariantContract $variant)
+    public function remove(Cart $cart, ProductVariantContract $variant)
     {
         try {
-            Basket::remove($variant);
+            $cart->remove($variant);
 
-            return response()->json(new BasketResource(Basket::getBasket()));
+            return response()->json($cart->toJson());
         } catch (\Throwable $e) {
             return response()->json($e->getMessage(), 400);
         }
