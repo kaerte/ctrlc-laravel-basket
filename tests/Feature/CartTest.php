@@ -111,4 +111,12 @@ class CartTest extends TestCase
 
         self::assertEquals(2, Cart::items()->first()->quantity);
     }
+
+    public function test_getting_the_same_basket(): void
+    {
+        $cart = Cart::add($this->productVariant);
+        $secondCart = Cart::get();
+
+        self::assertEquals($cart->id, $secondCart->id);
+    }
 }
