@@ -30,7 +30,7 @@ class BasketItem extends Model
 
     public function basket(): BelongsTo
     {
-        return $this->belongsTo(Basket::class);
+        return $this->belongsTo(Cart::class);
     }
 
     public function getPriceAttribute(): float | int

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Basket extends Model implements Cart
+class Cart extends Model implements Cart
 {
     use HasFactory;
 
@@ -24,7 +24,7 @@ class Basket extends Model implements Cart
 
     protected $with = ['basketable'];
 
-    public function instance(): Basket
+    public function instance(): Cart
     {
         return $this;
     }
@@ -54,7 +54,7 @@ class Basket extends Model implements Cart
         return $this->getTotalAttribute();
     }
 
-    public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Basket
+    public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
     {
         $this->fresh('items.item');
         $basketItem = $this->getBasketItem($variant, $meta);
@@ -84,7 +84,7 @@ class Basket extends Model implements Cart
         return $this;
     }
 
-    public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Basket
+    public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
     {
         if (! config('ctrlc.basket.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from basket is disabled');

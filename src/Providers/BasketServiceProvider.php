@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Providers;
 
-use Ctrlc\Basket\Contracts\Cart;
-use Ctrlc\Basket\Models\Basket;
+use Ctrlc\Basket\Contracts\Cart as CartContract;
+use Ctrlc\Basket\Models\Cart;
 use Ctrlc\Basket\Models\BasketItem;
 use Ctrlc\Basket\Observers\BasketItemObserver;
 use Illuminate\Support\Facades\Session;
@@ -19,14 +19,14 @@ class BasketServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.basket');
-        $this->app->singleton(Cart::class, function () {
+        $this->app->singleton(CartContract::class, function () {
             $cartId = Session::get('cart_id', null);
 
             if ($cartId) {
-                return Basket::find($cartId);
+                return Cart::find($cartId);
             }
 
-            $newCart = (new Basket())->create();
+            $newCart = (new Cart())->create();
             Session::put('cart_id', $newCart->id);
 
             return $newCart;
