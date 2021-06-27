@@ -2,14 +2,14 @@
 
 ```php
 
- Basket::add(ProductVariantContract $productVariant, $quantity = 1, $meta = [])
+ Cart::add(ProductVariantContract $productVariant, $quantity = 1, $meta = [])
  
- Basket::remove(ProductVariantContract $productVariant, $quantity = 1)
+ Cart::remove(ProductVariantContract $productVariant, $quantity = 1)
  
- $total = Basket::total();
+ $total = Cart::total();
  
- $basketModel = Basket::getBasket();
+ $cartModel = Cart::getCart();
  
- $items = Basket::items();
+ $items = Cart::items();
  
 ```
