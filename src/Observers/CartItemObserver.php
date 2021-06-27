@@ -9,23 +9,23 @@ use Illuminate\Support\Facades\Log;
 
 class CartItemObserver
 {
-    public function created(CartItem $basketItem)
+    public function created(CartItem $cartItem)
     {
-        Log::info('cart item created', [$basketItem]);
+        Log::info('cart item created', [$cartItem]);
     }
 
-    public function updated(CartItem $basketItem)
+    public function updated(CartItem $cartItem)
     {
-        Log::info('cart item updated', [$basketItem]);
+        Log::info('cart item updated', [$cartItem]);
     }
 
-    public function deleted(CartItem $basketItem)
+    public function deleted(CartItem $cartItem)
     {
-        Log::info('cart item deleted', [$basketItem]);
+        Log::info('cart item deleted', [$cartItem]);
     }
 
-    public function forceDeleted(CartItem $basketItem)
+    public function forceDeleted(CartItem $cartItem)
     {
-        Log::info('cart item force deleted', [$basketItem]);
+        Log::info('cart item force deleted', [$cartItem]);
     }
 }
