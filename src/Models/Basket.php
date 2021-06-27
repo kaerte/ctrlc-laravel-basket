@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Models;
 
+use Ctrlc\Basket\Contracts\Cart;
 use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Database\Factories\BasketFactory;
+use Ctrlc\Basket\Resources\BasketResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Basket extends Model
+class Basket extends Model implements Cart
 {
     use HasFactory;
 
@@ -122,5 +124,26 @@ class Basket extends Model
     protected static function newFactory(): BasketFactory
     {
         return BasketFactory::new();
+    }
+
+    public function get(): Cart
+    {
+        $basket = new self();
+        $basket->save();
+
+        return $basket->fresh();
+    }
+
+    public function create(): Cart
+    {
+        $basket = new self();
+        $basket->save();
+
+        return $basket->fresh();
+    }
+
+    public function toJson($options = 0): BasketResource
+    {
+        return new BasketResource($this);
     }
 }
