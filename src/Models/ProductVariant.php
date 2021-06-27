@@ -52,11 +52,6 @@ class ProductVariant extends Model implements ProductVariantContract
         return $query->where('default', 1);
     }
 
-    public function scopeOfVariant($query, int $variantId): Builder
-    {
-        return $query->where('id', $variantId);
-    }
-
     protected static function newFactory(): ProductVariantFactory
     {
         return new ProductVariantFactory();
