@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Basket\Models;
 
-use Ctrlc\Basket\Contracts\Cart;
+use Ctrlc\Basket\Contracts\Cart as CartContract;
 use Ctrlc\Basket\Contracts\ProductVariantContract;
 use Ctrlc\Basket\Database\Factories\BasketFactory;
 use Ctrlc\Basket\Resources\BasketResource;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Cart extends Model implements Cart
+class Cart extends Model implements CartContract
 {
     use HasFactory;
 
