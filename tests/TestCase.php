@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Cart\Tests;
 
-use Ctrlc\Basket\Providers\BasketServiceProvider;
+use Ctrlc\Cart\Providers\CartServiceProvider;
 use Illuminate\Routing\Router;
 use Plank\Metable\MetableServiceProvider;
 
@@ -18,14 +18,14 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getPackageProviders($app)
     {
-        return [BasketServiceProvider::class, MetableServiceProvider::class];
+        return [CartServiceProvider::class, MetableServiceProvider::class];
     }
 
     protected function defineRoutes($router): void
     {
         /** @var $router Router */
-        $router->get('/basket/get', [BasketController::class, 'getBasket'])->name('api_test.basket.get');
-        $router->post('/basket/add', [BasketController::class, 'add'])->name('api_test.basket.add');
-        $router->post('/basket/remove', [BasketController::class, 'remove'])->name('api_test.basket.remove');
+        $router->get('/cart/get', [CartController::class, 'getCart'])->name('api_test.cart.get');
+        $router->post('/cart/add', [CartController::class, 'add'])->name('api_test.cart.add');
+        $router->post('/cart/remove', [CartController::class, 'remove'])->name('api_test.cart.remove');
     }
 }

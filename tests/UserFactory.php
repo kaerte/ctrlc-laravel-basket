@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Cart\Tests;
 
 use Orchestra\Testbench\Factories\UserFactory as TestbenchUserFactory;
 

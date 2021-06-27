@@ -14,13 +14,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Ctrlc\\Basket\\": "src/",
-            "Ctrlc\\Basket\\Database\\Factories\\": "database/factories"
+            "Ctrlc\\Cart\\": "src/",
+            "Ctrlc\\Cart\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Ctrlc\\Basket\\Tests\\": "tests"
+            "Ctrlc\\Cart\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -39,10 +39,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Ctrlc\\Basket\\Providers\\BasketServiceProvider"
+                "CartServiceProvider"
             ],
             "aliases": {
-                "Basket": "Ctrlc\\Basket\\Facades\\Basket"
+                "Cart": "Ctrlc\\Cart\\Facades\\Cart"
             }
         }
     },

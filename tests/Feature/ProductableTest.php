@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests\Feature;
+namespace Ctrlc\Cart\Tests\Feature;
 
-use Ctrlc\Basket\Models\ProductVariant;
-use Ctrlc\Basket\Tests\TestCase;
-use Ctrlc\Basket\Tests\User;
+use Ctrlc\Cart\Models\ProductVariant;
+use Ctrlc\Cart\Tests\TestCase;
+use Ctrlc\Cart\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductableTest extends TestCase

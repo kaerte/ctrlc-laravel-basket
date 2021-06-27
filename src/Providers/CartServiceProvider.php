@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Providers;
+namespace Ctrlc\Cart\Providers;
 
-use Ctrlc\Basket\Contracts\Cart as CartContract;
-use Ctrlc\Basket\Models\Cart;
-use Ctrlc\Basket\Models\CartItem;
-use Ctrlc\Basket\Observers\CartItemObserver;
+use Ctrlc\Cart\Contracts\Cart as CartContract;
+use Ctrlc\Cart\Models\Cart;
+use Ctrlc\Cart\Models\CartItem;
+use Ctrlc\Cart\Observers\CartItemObserver;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
-class BasketServiceProvider extends ServiceProvider
+class CartServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}
      */
     public function register()
     {
-        $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.basket');
+        $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.cart');
         $this->app->singleton(CartContract::class, function () {
-            $cartId = Session::get('cart_id', null);
+            $cartId = Session::get('ctrlc:cart_id', null);
 
             if ($cartId) {
                 return Cart::find($cartId);
             }
 
             $newCart = (new Cart())->create();
-            Session::put('cart_id', $newCart->id);
+            Session::put('ctrlc:cart_id', $newCart->id);
 
             return $newCart;
         });
@@ -41,7 +41,7 @@ class BasketServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom([
-            dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_baskets.php',
+            dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_carts.php',
             dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_products_variants_table.php',
         ]);
 

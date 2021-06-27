@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests\Feature;
+namespace Ctrlc\Cart\Tests\Feature;
 
-use Ctrlc\Basket\Contracts\ProductVariantContract;
-use Ctrlc\Basket\Facades\Cart;
-use Ctrlc\Basket\Tests\TestCase;
-use Ctrlc\Basket\Tests\User;
+use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\Facades\Cart;
+use Ctrlc\Cart\Tests\TestCase;
+use Ctrlc\Cart\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BasketTest extends TestCase
+class CartTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -39,13 +39,13 @@ class BasketTest extends TestCase
         self::assertInstanceOf(User::class, $this->productVariant->productable);
     }
 
-    public function test_add_to_basket(): void
+    public function test_add_to_cart(): void
     {
         Cart::add($this->productVariant);
         self::assertEquals(1, Cart::items()->count());
     }
 
-    public function test_add_to_basket_total(): void
+    public function test_add_to_cart_total(): void
     {
         Cart::add($this->productVariant)
             ->add($this->productVariant);
@@ -53,40 +53,40 @@ class BasketTest extends TestCase
         self::assertEquals($this->productVariant->price * 2, Cart::total());
     }
 
-    public function test_add_to_basket_twice_basket_quantity(): void
+    public function test_add_to_cart_twice_cart_quantity(): void
     {
-        $basket = Cart::add($this->productVariant)
+        $cart = Cart::add($this->productVariant)
             ->add($this->productVariant);
 
-        self::assertEquals(2, $basket->items->first()->quantity);
+        self::assertEquals(2, $cart->items->first()->quantity);
     }
 
-    public function test_remove_from_basket(): void
+    public function test_remove_from_cart(): void
     {
-        $basket = Cart::add($this->productVariant)
+        $cart = Cart::add($this->productVariant)
             ->add($this->productVariant)
             ->remove($this->productVariant);
 
-        self::assertEquals(1, $basket->items->first()->quantity);
+        self::assertEquals(1, $cart->items->first()->quantity);
     }
 
-    public function test_remove_all_from_basket(): void
+    public function test_remove_all_from_cart(): void
     {
-        $basket = Cart::add($this->productVariant)
+        $cart = Cart::add($this->productVariant)
             ->add($this->productVariant)
             ->remove($this->productVariant, 2);
 
-        self::assertEmpty($basket->items);
+        self::assertEmpty($cart->items);
         self::assertEquals(0, Cart::total());
     }
 
-    public function test_add_over_quantity_to_basket(): void
+    public function test_add_over_quantity_to_cart(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         Cart::add($this->productVariant, 11);
     }
 
-    public function test_add_over_quantity_in_multiple_operations_to_basket(): void
+    public function test_add_over_quantity_in_multiple_operations_to_cart(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         Cart::add($this->productVariant, 1)
@@ -95,7 +95,7 @@ class BasketTest extends TestCase
             ->add($this->productVariant, $this->variantQuantity + 1);
     }
 
-    public function test_add_unlimited_quantity_to_basket(): void
+    public function test_add_unlimited_quantity_to_cart(): void
     {
         $this->productable = User::factory()
             ->hasVariants(1, [

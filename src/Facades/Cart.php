@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Facades;
+namespace Ctrlc\Cart\Facades;
 
-use Ctrlc\Basket\Contracts\Cart as CartContract;
+use Ctrlc\Cart\Contracts\Cart as CartContract;
 use Illuminate\Support\Facades\Facade;
 
 class Cart extends Facade

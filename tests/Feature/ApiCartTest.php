@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests\Feature;
+namespace Ctrlc\Cart\Tests\Feature;
 
-use Ctrlc\Basket\Facades\Cart;
-use Ctrlc\Basket\Tests\TestCase;
-use Ctrlc\Basket\Tests\User;
+use Ctrlc\Cart\Facades\Cart;
+use Ctrlc\Cart\Tests\TestCase;
+use Ctrlc\Cart\Tests\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ApiBasketTest extends TestCase
+class ApiCartTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -26,9 +26,9 @@ class ApiBasketTest extends TestCase
             ->create();
     }
 
-    public function test_api_get_empty_basket(): void
+    public function test_api_get_empty_cart(): void
     {
-        $request = $this->get(route('api_test.basket.get'));
+        $request = $this->get(route('api_test.cart.get'));
         $request->assertJsonStructure([
             'id',
             'total',
@@ -36,11 +36,11 @@ class ApiBasketTest extends TestCase
         ]);
     }
 
-    public function test_api_get_basket(): void
+    public function test_api_get_cart(): void
     {
         Cart::add($this->productable->defaultVariant);
 
-        $request = $this->get(route('api_test.basket.get'));
+        $request = $this->get(route('api_test.cart.get'));
         $request->assertJsonStructure([
             'id',
             'total',

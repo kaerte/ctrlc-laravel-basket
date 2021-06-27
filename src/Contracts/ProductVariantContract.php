@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Contracts;
+namespace Ctrlc\Cart\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 

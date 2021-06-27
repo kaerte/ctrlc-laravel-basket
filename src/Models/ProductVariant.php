@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Models;
+namespace Ctrlc\Cart\Models;
 
-use Ctrlc\Basket\Contracts\ProductVariantContract;
-use Ctrlc\Basket\Database\Factories\ProductVariantFactory;
+use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\Database\Factories\ProductVariantFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Models;
+namespace Ctrlc\Cart\Models;
 
-use Ctrlc\Basket\Contracts\Cart as CartContract;
-use Ctrlc\Basket\Contracts\ProductVariantContract;
-use Ctrlc\Basket\Database\Factories\BasketFactory;
-use Ctrlc\Basket\Resources\BasketResource;
+use Ctrlc\Cart\Contracts\Cart as CartContract;
+use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\Database\Factories\CartFactory;
+use Ctrlc\Cart\Resources\CartResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,14 +22,14 @@ class Cart extends Model implements CartContract
 
     protected $appends = ['total'];
 
-    protected $with = ['basketable'];
+    protected $with = ['cartable'];
 
     public function instance(): Cart
     {
         return $this;
     }
 
-    public function basketable(): MorphTo
+    public function cartable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -57,7 +57,7 @@ class Cart extends Model implements CartContract
     public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
     {
         $this->fresh('items.item');
-        $basketItem = $this->getBasketItem($variant, $meta);
+        $basketItem = $this->getCartItem($variant, $meta);
         $basketQuantity = (int) ($basketItem?->quantity ?? 0);
 
         if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity + $basketQuantity)) {
@@ -69,7 +69,7 @@ class Cart extends Model implements CartContract
                 $basketItem = new CartItem([
                     'quantity' => $quantity,
                 ]);
-                $basketItem->basket()->associate($this);
+                $basketItem->cart()->associate($this);
                 $basketItem->item()->associate($variant);
                 $this->items()->save($basketItem);
                 $this->save();
@@ -86,12 +86,12 @@ class Cart extends Model implements CartContract
 
     public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
     {
-        if (! config('ctrlc.basket.allow_remove')) {
+        if (! config('ctrlc.cart.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from basket is disabled');
         }
 
         \DB::transaction(function () use ($variant, $quantity, $meta) {
-            $basketItem = $this->getBasketItem($variant, $meta);
+            $basketItem = $this->getCartItem($variant, $meta);
             if ($basketItem->quantity === $quantity) {
                 $basketItem->delete();
             }
@@ -106,7 +106,7 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
-    private function getBasketItem(ProductVariantContract $variant, array $meta)
+    private function getCartItem(ProductVariantContract $variant, array $meta)
     {
         return $this->items()
             ->where('item_id', $variant->getKey())
@@ -121,9 +121,9 @@ class Cart extends Model implements CartContract
             ->first();
     }
 
-    protected static function newFactory(): BasketFactory
+    protected static function newFactory(): CartFactory
     {
-        return BasketFactory::new();
+        return CartFactory::new();
     }
 
     public function get(): Cart
@@ -142,8 +142,8 @@ class Cart extends Model implements CartContract
         return $basket->fresh();
     }
 
-    public function toJson($options = 0): BasketResource
+    public function toJson($options = 0): CartResource
     {
-        return new BasketResource($this);
+        return new CartResource($this);
     }
 }

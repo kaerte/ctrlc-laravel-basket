@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Traits;
+namespace Ctrlc\Cart\Traits;
 
-use Ctrlc\Basket\Models\ProductVariant;
+use Ctrlc\Cart\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 

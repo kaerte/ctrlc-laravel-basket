@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Traits;
+namespace Ctrlc\Cart\Traits;
 
-use Ctrlc\Basket\Models\Cart;
+use Ctrlc\Cart\Models\Cart;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 trait HasCart
 {
-    public function basket(): MorphOne
+    public function cart(): MorphOne
     {
-        return $this->morphOne(Cart::class, 'basketable');
+        return $this->morphOne(Cart::class, 'cartable');
     }
 }

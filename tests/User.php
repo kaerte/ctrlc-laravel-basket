@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Cart\Tests;
 
-use Ctrlc\Basket\Traits\HasCart;
-use Ctrlc\Basket\Traits\Productable;
+use Ctrlc\Cart\Traits\HasCart;
+use Ctrlc\Cart\Traits\Productable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Resources;
+namespace Ctrlc\Cart\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BasketResource extends JsonResource
+class CartResource extends JsonResource
 {
     public function toArray($request = null)
     {
         return [
             'id' => $this->id,
             'total' => $this->total,
-            'items' => BasketItemResource::collection($this->whenLoaded('items')),
+            'items' => CartItemResource::collection($this->whenLoaded('items')),
         ];
     }
 }

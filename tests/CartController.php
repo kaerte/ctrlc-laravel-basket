@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Tests;
+namespace Ctrlc\Cart\Tests;
 
-use Ctrlc\Basket\Contracts\Cart;
-use Ctrlc\Basket\Contracts\ProductVariantContract;
+use Ctrlc\Cart\Contracts\Cart;
+use Ctrlc\Cart\Contracts\ProductVariantContract;
 use Illuminate\Routing\Controller;
 
-class BasketController extends Controller
+class CartController extends Controller
 {
-    public function getBasket(Cart $cart)
+    public function getCart(Cart $cart)
     {
         return response()->json($cart->toJson());
     }

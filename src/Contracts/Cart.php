@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Contracts;
+namespace Ctrlc\Cart\Contracts;
 
-use Ctrlc\Basket\Resources\BasketResource;
+use Ctrlc\Cart\Resources\CartResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -22,5 +22,5 @@ interface Cart
 
     public function create(): Cart;
 
-    public function toJson(): BasketResource;
+    public function toJson(): CartResource;
 }

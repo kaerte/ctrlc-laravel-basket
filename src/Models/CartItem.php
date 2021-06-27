@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Models;
+namespace Ctrlc\Cart\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,7 +28,7 @@ class CartItem extends Model
         return $this->morphTo();
     }
 
-    public function basket(): BelongsTo
+    public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class);
     }

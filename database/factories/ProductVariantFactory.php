@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Database\Factories;
+namespace Ctrlc\Cart\Database\Factories;
 
-use Ctrlc\Basket\Models\ProductVariant;
+use Ctrlc\Cart\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductVariantFactory extends Factory

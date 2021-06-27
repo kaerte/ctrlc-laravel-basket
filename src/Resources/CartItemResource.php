@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Basket\Resources;
+namespace Ctrlc\Cart\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BasketItemResource extends JsonResource
+class CartItemResource extends JsonResource
 {
     public function toArray($request = null)
     {
