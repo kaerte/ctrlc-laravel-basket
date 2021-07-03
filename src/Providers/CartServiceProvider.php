@@ -8,7 +8,7 @@ use Ctrlc\Cart\Contracts\Cart as CartContract;
 use Ctrlc\Cart\Models\Cart;
 use Ctrlc\Cart\Models\CartItem;
 use Ctrlc\Cart\Observers\CartItemObserver;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
@@ -20,14 +20,14 @@ class CartServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.cart');
         $this->app->singleton(CartContract::class, function () {
-            $cartId = Session::get('ctrlc:cart_id', null);
+            $cartId = Cache::get('ctrlc:cart_id', null);
 
             if ($cartId) {
                 return Cart::find($cartId);
             }
 
             $newCart = (new Cart())->create();
-            Session::put('ctrlc:cart_id', $newCart->id);
+            Cache::forever('ctrlc:cart_id', $newCart->id);
 
             return $newCart;
         });
