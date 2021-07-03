@@ -64,7 +64,7 @@ class Cart extends Model implements CartContract
             throw new \InvalidArgumentException('Product of this quantity is not in stock');
         }
 
-        \DB::transaction(function () use ($variant, $quantity, $cartItem) {
+        \DB::transaction(function () use ($variant, $quantity, $cartItem, $meta) {
             if (!$cartItem) {
                 $cartItem = new CartItem([
                     'quantity' => $quantity,
@@ -72,6 +72,7 @@ class Cart extends Model implements CartContract
                 $cartItem->cart()->associate($this);
                 $cartItem->item()->associate($variant);
                 $this->items()->save($cartItem);
+                $cartItem->syncMeta($meta);
                 $this->save();
             } else {
                 $cartItem->quantity += $quantity;
