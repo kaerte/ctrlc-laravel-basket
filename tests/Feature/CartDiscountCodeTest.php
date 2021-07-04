@@ -58,6 +58,7 @@ class CartDiscountCodeTest extends TestCase
         $percent = $value/100;
         $expected = (int) (self::INITIAL_TOTAL - round(self::INITIAL_TOTAL * $percent));
         self::assertEquals($expected, Cart::total());
+        self::assertEquals($expected, Cart::get()->total);
     }
 
     public function test_clear_discount_code(): void

@@ -42,19 +42,21 @@ class Cart extends Model implements CartContract
         return $this->hasMany(CartItem::class);
     }
 
-    public function getTotalAttribute($withDiscount = true): int
+    public function getTotalAttribute($ignoreDiscount = false): int
     {
         $total = 0;
         foreach ($this->items as $item) {
             $total += $item->price * $item->quantity;
         }
         
-        if ($withDiscount && $this->discountCode && $this->discountCode->isActive()) {
-            if ($this->discountCode->type->equals(DiscountCodeTypeEnum::PERCENT())) {
-                $total -= $total * ($this->discountCode->value/100);
-            }
-            if ($this->discountCode->type->equals(DiscountCodeTypeEnum::MONEY())) {
-                $total -= $this->discountCode->value;
+        if (!$ignoreDiscount) {
+            if ($this->discountCode && $this->discountCode->isActive()) {
+                if ($this->discountCode->type->equals(DiscountCodeTypeEnum::PERCENT())) {
+                    $total -= $total * ($this->discountCode->value / 100);
+                }
+                if ($this->discountCode->type->equals(DiscountCodeTypeEnum::MONEY())) {
+                    $total -= $this->discountCode->value;
+                }
             }
         }
         
@@ -181,6 +183,6 @@ class Cart extends Model implements CartContract
 
     public function getDiscountedAmount(): int
     {
-        return $this->getTotalAttribute(false) - $this->getTotalAttribute();
+        return $this->getTotalAttribute(true) - $this->getTotalAttribute();
     }
 }
