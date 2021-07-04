@@ -16,6 +16,8 @@ interface Cart
 
     public function total(): int;
 
+    public function discountedAmount(): int;
+
     public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart;
 
     public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []);
@@ -29,8 +31,6 @@ interface Cart
     public function addDiscountCode(DiscountCode $discountCode): Cart;
     
     public function removeDiscountCode(): Cart;
-
-    public function getDiscountedAmount(): int;
 
     public function toJson(): CartResource;
 }

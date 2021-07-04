@@ -23,7 +23,7 @@ class Cart extends Model implements CartContract
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['total'];
+    protected $appends = ['total', 'discountedAmount'];
 
     protected $with = ['cartable', 'discountCode'];
 
@@ -42,6 +42,11 @@ class Cart extends Model implements CartContract
         return $this->hasMany(CartItem::class);
     }
 
+    public function total(): int
+    {
+        return $this->getTotalAttribute();
+    }
+    
     public function getTotalAttribute($ignoreDiscount = false): int
     {
         $total = 0;
@@ -63,12 +68,7 @@ class Cart extends Model implements CartContract
         //dealing with cents, so round up cent fraction
         return (int) round($total);
     }
-
-    public function total(): int
-    {
-        return $this->getTotalAttribute();
-    }
-
+    
     public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
     {
         $this->fresh('items.item');
@@ -181,7 +181,12 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
-    public function getDiscountedAmount(): int
+    public function discountedAmount(): int
+    {
+        return $this->getDiscountedAmountAttribute();
+    }
+    
+    public function getDiscountedAmountAttribute(): int
     {
         return $this->getTotalAttribute(true) - $this->getTotalAttribute();
     }
