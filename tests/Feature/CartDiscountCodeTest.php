@@ -80,4 +80,24 @@ class CartDiscountCodeTest extends TestCase
 
         self::assertEquals(self::INITIAL_TOTAL, Cart::total());
     }
+
+    public function test_money_code_cannot_make_total_negative(): void
+    {
+        $value = 500;
+        $discountCode = DiscountCode::factory()->money()->active()->create(['value' => $value]);
+        Cart::add($this->productVariant)
+            ->addDiscountCode($discountCode);
+
+        self::assertEquals(0, Cart::total());
+    }
+
+    public function test_percent_code_cannot_make_total_negative(): void
+    {
+        $value = 500;
+        $discountCode = DiscountCode::factory()->percent()->active()->create(['value' => $value]);
+        Cart::add($this->productVariant)
+            ->addDiscountCode($discountCode);
+
+        self::assertEquals(0, Cart::total());
+    }
 }

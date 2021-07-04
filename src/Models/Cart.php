@@ -66,7 +66,7 @@ class Cart extends Model implements CartContract
         }
         
         //dealing with cents, so round up cent fraction
-        return (int) round($total);
+        return (int) max(round($total), 0);
     }
     
     public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
