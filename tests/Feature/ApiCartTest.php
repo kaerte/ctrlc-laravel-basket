@@ -33,6 +33,8 @@ class ApiCartTest extends TestCase
             'id',
             'total',
             'items',
+            'discount_code',
+            'discounted_amount',
         ]);
     }
 
@@ -50,9 +52,11 @@ class ApiCartTest extends TestCase
                     'quantity',
                     'price',
                     'name',
-                    'metadata',
+                    'meta',
                 ],
             ],
+            'discount_code',
+            'discounted_amount',
         ]);
     }
 }

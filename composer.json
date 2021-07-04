@@ -10,6 +10,7 @@
     ],
     "require": {
         "php": "^8.0.1",
+        "ctrlc/laravel-discount-code": "dev-main",
         "plank/laravel-metable": "^5.0"
     },
     "autoload": {

@@ -15,7 +15,7 @@ class CartItemResource extends JsonResource
             'quantity' => $this->quantity,
             'price' => ($this->item->price) * $this->quantity,
             'name' => $this->item->name,
-            'metadata' => $this->getAllMeta(),
+            'meta' => $this->getAllMeta(),
         ];
     }
 }

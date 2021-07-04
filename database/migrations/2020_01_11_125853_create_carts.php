@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Ctrlc\Cart\Models\Cart;
+use Ctrlc\DiscountCode\Models\DiscountCode;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,7 @@ class CreateCarts extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->nullableMorphs('cartable');
+            $table->foreignIdFor(DiscountCode::class)->nullable()->constrained();
             $table->timestamps();
         });
 

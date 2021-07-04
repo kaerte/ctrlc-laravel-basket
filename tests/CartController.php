@@ -6,6 +6,9 @@ namespace Ctrlc\Cart\Tests;
 
 use Ctrlc\Cart\Contracts\Cart;
 use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\DiscountCode\Models\DiscountCode;
+use Ctrlc\DiscountCode\Rules\DiscountCodeRule;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class CartController extends Controller
@@ -30,6 +33,35 @@ class CartController extends Controller
     {
         try {
             $cart->remove($variant);
+
+            return response()->json($cart->toJson());
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function addDiscountCode(Request $request, Cart $cart)
+    {
+        $request->validate([
+            'discount_code' => ['exists:discount_codes,code', new DiscountCodeRule],
+        ]);
+
+        $discountCode = DiscountCode::where('code', $request->input('discount_code'))->first();
+
+        try {
+            $cart->discountCode()->associate($discountCode);
+
+            return response()->json($cart->toJson());
+        } catch (\Throwable $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function removeDiscountCode(Cart $cart)
+    {
+        try {
+            $cart->discountCode()->disassociate();
+            $cart->save();
 
             return response()->json($cart->toJson());
         } catch (\Throwable $e) {

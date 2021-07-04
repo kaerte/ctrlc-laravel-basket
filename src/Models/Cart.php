@@ -8,9 +8,12 @@ use Ctrlc\Cart\Contracts\Cart as CartContract;
 use Ctrlc\Cart\Contracts\ProductVariantContract;
 use Ctrlc\Cart\Database\Factories\CartFactory;
 use Ctrlc\Cart\Resources\CartResource;
+use Ctrlc\DiscountCode\Enums\DiscountCodeTypeEnum;
+use Ctrlc\DiscountCode\Models\DiscountCode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -22,9 +25,9 @@ class Cart extends Model implements CartContract
 
     protected $appends = ['total'];
 
-    protected $with = ['cartable'];
+    protected $with = ['cartable', 'discountCode'];
 
-    public function instance(): Cart
+    public function instance(): self
     {
         return $this;
     }
@@ -39,14 +42,24 @@ class Cart extends Model implements CartContract
         return $this->hasMany(CartItem::class);
     }
 
-    public function getTotalAttribute(): float | int
+    public function getTotalAttribute($withDiscount = true): int
     {
         $total = 0;
         foreach ($this->items as $item) {
             $total += $item->price * $item->quantity;
         }
-
-        return $total;
+        
+        if ($withDiscount && $this->discountCode && $this->discountCode->isActive()) {
+            if ($this->discountCode->type->equals(DiscountCodeTypeEnum::PERCENT())) {
+                $total -= $total * ($this->discountCode->value/100);
+            }
+            if ($this->discountCode->type->equals(DiscountCodeTypeEnum::MONEY())) {
+                $total -= $this->discountCode->value;
+            }
+        }
+        
+        //dealing with cents, so round up cent fraction
+        return (int) round($total);
     }
 
     public function total(): int
@@ -54,7 +67,7 @@ class Cart extends Model implements CartContract
         return $this->getTotalAttribute();
     }
 
-    public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
+    public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
     {
         $this->fresh('items.item');
         $cartItem = $this->getCartItem($variant, $meta);
@@ -85,7 +98,7 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
-    public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): Cart
+    public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
     {
         if (! config('ctrlc.cart.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from cart is disabled');
@@ -112,7 +125,7 @@ class Cart extends Model implements CartContract
         return $this->items()
             ->where('item_id', $variant->getKey())
             ->where('item_type', $variant::class)
-            ->when(!empty($meta), function (Builder $query) use ($meta) {
+            ->when(!empty($meta), function (Builder $query, $meta) {
                 foreach ($meta as $key => $value) {
                     $query->whereMeta($key, $value)->get();
                 }
@@ -127,12 +140,12 @@ class Cart extends Model implements CartContract
         return CartFactory::new();
     }
 
-    public function get(): Cart
+    public function get(): self
     {
         return $this->fresh();
     }
 
-    public function create(): Cart
+    public function create(): self
     {
         $cart = new self();
         $cart->save();
@@ -143,5 +156,31 @@ class Cart extends Model implements CartContract
     public function toJson($options = 0): CartResource
     {
         return new CartResource($this);
+    }
+
+    public function discountCode(): BelongsTo
+    {
+        return $this->belongsTo(DiscountCode::class);
+    }
+
+    public function addDiscountCode(DiscountCode $discountCode): self
+    {
+        $this->discountCode()->associate($discountCode);
+        $this->save();
+     
+        return $this;
+    }
+    
+    public function removeDiscountCode(): self
+    {
+        $this->discountCode()->disassociate();
+        $this->save();
+
+        return $this;
+    }
+
+    public function getDiscountedAmount(): int
+    {
+        return $this->getTotalAttribute(false) - $this->getTotalAttribute();
     }
 }

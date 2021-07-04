@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ctrlc\Cart\Contracts;
 
 use Ctrlc\Cart\Resources\CartResource;
+use Ctrlc\DiscountCode\Models\DiscountCode;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
@@ -21,6 +23,14 @@ interface Cart
     public function get(): Cart;
 
     public function create(): Cart;
+    
+    public function discountCode(): BelongsTo;
+
+    public function addDiscountCode(DiscountCode $discountCode): Cart;
+    
+    public function removeDiscountCode(): Cart;
+
+    public function getDiscountedAmount(): int;
 
     public function toJson(): CartResource;
 }
