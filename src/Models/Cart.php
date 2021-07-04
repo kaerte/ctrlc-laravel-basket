@@ -125,7 +125,7 @@ class Cart extends Model implements CartContract
         return $this->items()
             ->where('item_id', $variant->getKey())
             ->where('item_type', $variant::class)
-            ->when(!empty($meta), function (Builder $query, $meta) {
+            ->when($meta, function (Builder $query, $meta) {
                 foreach ($meta as $key => $value) {
                     $query->whereMeta($key, $value)->get();
                 }

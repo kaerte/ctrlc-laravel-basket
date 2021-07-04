@@ -119,4 +119,22 @@ class CartTest extends TestCase
 
         self::assertEquals($cart->id, $secondCart->id);
     }
+
+    public function test_adding_with_invalid_meta(): void
+    {
+        $this->expectException(\TypeError::class);
+        $cart = Cart::add($this->productVariant, 1, true);
+
+        self::assertEquals($cart, $cart);
+    }
+
+    public function test_adding_with_meta(): void
+    {
+        $meta = ['key' => 'value'];
+        $cart = Cart::add($this->productVariant, 1, $meta);
+
+        $itemMeta = $cart->items->first()->meta;
+        
+        self::assertSame($meta, [$itemMeta->first()->key => $itemMeta->first()->value]);
+    }
 }
