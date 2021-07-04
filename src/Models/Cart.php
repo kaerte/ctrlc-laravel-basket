@@ -23,7 +23,7 @@ class Cart extends Model implements CartContract
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['total', 'discountedAmount'];
+    protected $appends = ['total', 'discounted_amount'];
 
     protected $with = ['cartable', 'discountCode'];
 

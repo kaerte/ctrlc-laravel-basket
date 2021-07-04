@@ -38,6 +38,15 @@ class CartDiscountCodeTest extends TestCase
         $this->productVariant = $this->productable->defaultVariant;
     }
 
+    public function test_cart_has_attributes(): void
+    {
+        $cart = Cart::get()->toArray();
+
+        self::assertArrayHasKey('total', $cart);
+        self::assertArrayHasKey('discount_code', $cart);
+        self::assertArrayHasKey('discounted_amount', $cart);
+    }
+    
     public function test_apply_20_money_off_code(): void
     {
         $value = 20;
