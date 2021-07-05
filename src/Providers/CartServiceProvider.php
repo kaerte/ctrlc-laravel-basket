@@ -20,10 +20,12 @@ class CartServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.cart');
         $this->app->singleton(CartContract::class, function () {
+            
             $cartId = Cache::get('ctrlc:cart_id', null);
-
-            if ($cartId) {
-                return Cart::find($cartId);
+            $cart = Cart::find($cartId);
+            
+            if ($cart) {
+                return $cart;
             }
 
             $newCart = (new Cart())->create();
