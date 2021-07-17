@@ -2,9 +2,11 @@
 
 ```php
 
- Cart::add(ProductVariantContract $productVariant, $quantity = 1, $meta = [])
+ Cart::add(CartItemable $cartItemable, $quantity = 1, $meta = [])
  
- Cart::remove(ProductVariantContract $productVariant, $quantity = 1)
+ Cart::remove(CartItemable $cartItemable, $quantity = 1, $meta = [])
+ 
+ Cart::updateQuantity(CartItemable $cartItemable, $quantity = 10, $meta = [])
  
  $total = Cart::total();
  
