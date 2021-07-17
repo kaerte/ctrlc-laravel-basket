@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Tests;
 
-use Ctrlc\Cart\Contracts\Cart;
-use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\Cart;
+use Ctrlc\Cart\CartItemable;
 use Ctrlc\DiscountCode\Models\DiscountCode;
 use Ctrlc\DiscountCode\Rules\DiscountCodeRule;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class CartController extends Controller
         return response()->json($cart->toJson());
     }
 
-    public function add(Cart $cart, ProductVariantContract $variant)
+    public function add(Cart $cart, CartItemable $variant)
     {
         try {
             $cart->add($variant);
@@ -29,7 +29,7 @@ class CartController extends Controller
         }
     }
 
-    public function remove(Cart $cart, ProductVariantContract $variant)
+    public function remove(Cart $cart, CartItemable $variant)
     {
         try {
             $cart->remove($variant);

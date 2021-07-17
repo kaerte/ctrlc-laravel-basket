@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Database\Factories;
 
-use Ctrlc\Cart\Models\Cart;
+use Ctrlc\Cart\EloquentCart;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CartFactory extends Factory
 {
-    protected $model = Cart::class;
+    protected $model = EloquentCart::class;
 
     public function definition()
     {
         return [
-            'name' => $this->faker->colorName.' basket',
+            'name' => $this->faker->colorName.' cart',
         ];
     }
 }

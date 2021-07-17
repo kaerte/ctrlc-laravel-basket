@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Tests\Feature;
 
-use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\CartItemable;
 use Ctrlc\Cart\Facades\Cart;
 use Ctrlc\Cart\Tests\TestCase;
-use Ctrlc\Cart\Tests\User;
+use Ctrlc\Cart\Tests\User as Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,7 +17,7 @@ class CartTest extends TestCase
 
     public Model $productable;
 
-    public ProductVariantContract $productVariant;
+    public CartItemable $productVariant;
 
     private int $variantAvailableQuantity = 10;
 
@@ -25,7 +25,7 @@ class CartTest extends TestCase
     {
         parent::setUp();
 
-        $this->productable = User::factory()
+        $this->productable = Product::factory()
             ->hasVariants(1, [
                 'default' => 1,
                 'quantity' => $this->variantAvailableQuantity,
@@ -33,11 +33,6 @@ class CartTest extends TestCase
             ->create();
 
         $this->productVariant = $this->productable->defaultVariant;
-    }
-
-    public function test_product_creation(): void
-    {
-        self::assertInstanceOf(User::class, $this->productVariant->productable);
     }
 
     public function test_add_to_cart(): void
@@ -98,7 +93,7 @@ class CartTest extends TestCase
 
     public function test_add_unlimited_quantity_to_cart(): void
     {
-        $this->productable = User::factory()
+        $this->productable = Product::factory()
             ->hasVariants(1, [
                 'default' => 1,
                 'quantity' => null,

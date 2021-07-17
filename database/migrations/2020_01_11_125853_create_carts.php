@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Ctrlc\Cart\Models\Cart;
+use Ctrlc\Cart\EloquentCart;
 use Ctrlc\DiscountCode\Models\DiscountCode;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -28,7 +28,7 @@ class CreateCarts extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->morphs('item');
-            $table->foreignIdFor(Cart::class)->constrained();
+            $table->foreignIdFor(EloquentCart::class, 'cart_id')->constrained();
             $table->unsignedMediumInteger('quantity')->default(0);
             $table->timestamps();
         });

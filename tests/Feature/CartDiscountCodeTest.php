@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Tests\Feature;
 
-use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\CartItemable;
 use Ctrlc\Cart\Facades\Cart;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
@@ -18,7 +18,7 @@ class CartDiscountCodeTest extends TestCase
 
     public Model $productable;
 
-    public ProductVariantContract $productVariant;
+    public CartItemable $productVariant;
 
     private int $variantQuantity = 1;
     

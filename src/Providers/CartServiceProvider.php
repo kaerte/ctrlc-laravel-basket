@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Providers;
 
-use Ctrlc\Cart\Contracts\Cart as CartContract;
-use Ctrlc\Cart\Models\Cart;
-use Ctrlc\Cart\Models\CartItem;
-use Ctrlc\Cart\Observers\CartItemObserver;
+use Ctrlc\Cart\Cart;
+use Ctrlc\Cart\CartItem;
+use Ctrlc\Cart\EloquentCart;
+use Ctrlc\Cart\EloquentCartItem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,20 +19,23 @@ class CartServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(dirname(__DIR__, 2).'/config/config.php', 'ctrlc.cart');
-        $this->app->singleton(CartContract::class, function () {
-            
+
+        
+        $this->app->bind(Cart::class, function () {
             $cartId = Cache::get('ctrlc:cart_id', null);
-            $cart = Cart::find($cartId);
+            $cart = EloquentCart::find($cartId);
             
             if ($cart) {
                 return $cart;
             }
 
-            $newCart = (new Cart())->create();
+            $newCart = (new EloquentCart())->create();
             Cache::forever('ctrlc:cart_id', $newCart->id);
 
             return $newCart;
         });
+
+        $this->app->bind(CartItem::class, EloquentCartItem::class);
     }
 
     /**
@@ -46,7 +49,5 @@ class CartServiceProvider extends ServiceProvider
             dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_carts.php',
             dirname(__DIR__, 2).'/database/migrations/2020_01_11_125853_create_products_variants_table.php',
         ]);
-
-        CartItem::observe(CartItemObserver::class);
     }
 }

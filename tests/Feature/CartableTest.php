@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Tests\Feature;
 
-use Ctrlc\Cart\Contracts\Cart;
+use Ctrlc\Cart\Cart;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
 use Illuminate\Database\Eloquent\Model;

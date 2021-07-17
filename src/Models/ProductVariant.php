@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Models;
 
-use Ctrlc\Cart\Contracts\ProductVariantContract;
+use Ctrlc\Cart\CartItemable;
 use Ctrlc\Cart\Database\Factories\ProductVariantFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Plank\Metable\Metable;
 
-class ProductVariant extends Model implements ProductVariantContract
+class ProductVariant extends Model implements CartItemable
 {
     use HasFactory;
     use Metable;
@@ -30,7 +30,7 @@ class ProductVariant extends Model implements ProductVariantContract
         'default' => 'int',
     ];
 
-    protected $with = ['productable', 'meta'];
+    protected $with = ['meta'];
     
     public function productable(): MorphTo
     {

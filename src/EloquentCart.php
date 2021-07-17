@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Cart\Models;
+namespace Ctrlc\Cart;
 
-use Ctrlc\Cart\Contracts\Cart as CartContract;
-use Ctrlc\Cart\Contracts\ProductVariantContract;
 use Ctrlc\Cart\Database\Factories\CartFactory;
 use Ctrlc\Cart\Resources\CartResource;
 use Ctrlc\DiscountCode\Enums\DiscountCodeTypeEnum;
@@ -17,9 +15,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Cart extends Model implements CartContract
+class EloquentCart extends Model implements Cart
 {
     use HasFactory;
+    
+    protected $table = 'carts';
 
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -39,7 +39,7 @@ class Cart extends Model implements CartContract
 
     public function items(): HasMany
     {
-        return $this->hasMany(CartItem::class);
+        return $this->hasMany(EloquentCartItem::class, 'cart_id', 'id');
     }
 
     public function total(): int
@@ -69,7 +69,7 @@ class Cart extends Model implements CartContract
         return (int) max(round($total), 0);
     }
     
-    public function add(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
+    public function add(CartItemable $variant, ?int $quantity = 1, ?array $meta = []): self
     {
         $this->fresh('items.item');
         $cartItem = $this->getCartItem($variant, $meta);
@@ -81,7 +81,7 @@ class Cart extends Model implements CartContract
 
         \DB::transaction(function () use ($variant, $quantity, $cartItem, $meta) {
             if (!$cartItem) {
-                $cartItem = new CartItem([
+                $cartItem = new EloquentCartItem([
                     'quantity' => $quantity,
                 ]);
                 $cartItem->cart()->associate($this);
@@ -100,7 +100,7 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
-    public function remove(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
+    public function remove(CartItemable $variant, ?int $quantity = 1, ?array $meta = []): self
     {
         if (! config('ctrlc.cart.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from cart is disabled');
@@ -122,7 +122,7 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
-    public function updateQuantity(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
+    public function updateQuantity(CartItemable $variant, ?int $quantity = 1, ?array $meta = []): self
     {
         $this->fresh('items.item');
         $cartItem = $this->getCartItem($variant, $meta);
@@ -142,7 +142,7 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
-    private function getCartItem(ProductVariantContract $variant, array $meta)
+    private function getCartItem(CartItemable $variant, array $meta)
     {
         return $this->items()
             ->where('item_id', $variant->getKey())
@@ -185,7 +185,7 @@ class Cart extends Model implements CartContract
         return $this->belongsTo(DiscountCode::class);
     }
 
-    public function addDiscountCode(DiscountCode $discountCode): self
+    public function addDiscountCode($discountCode): self
     {
         $this->discountCode()->associate($discountCode);
         $this->save();
