@@ -9,13 +9,14 @@ use Ctrlc\Cart\Facades\Cart;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
 use Ctrlc\DiscountCode\Models\DiscountCode;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CartDiscountCodeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public User $productable;
+    public Model $productable;
 
     public ProductVariantContract $productVariant;
 

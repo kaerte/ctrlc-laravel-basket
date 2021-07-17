@@ -7,13 +7,14 @@ namespace Ctrlc\Cart\Tests\Feature;
 use Ctrlc\Cart\Models\ProductVariant;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductableTest extends TestCase
 {
     use RefreshDatabase;
 
-    public User $productable;
+    public Model $productable;
 
     protected function setUp(): void
     {
@@ -27,7 +28,7 @@ class ProductableTest extends TestCase
             ->create();
     }
 
-    public function test_product_has_variant()
+    public function test_product_has_variant(): void
     {
         self::assertCount(1, $this->productable->variants);
     }

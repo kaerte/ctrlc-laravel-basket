@@ -7,6 +7,7 @@ namespace Ctrlc\Cart\Tests\Feature;
 use Ctrlc\Cart\Contracts\Cart;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 
@@ -14,7 +15,7 @@ class CartableTest extends TestCase
 {
     use RefreshDatabase;
 
-    public User $cartable;
+    public Model $cartable;
 
     protected function setUp(): void
     {

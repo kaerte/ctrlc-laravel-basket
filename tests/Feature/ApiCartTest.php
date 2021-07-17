@@ -7,13 +7,14 @@ namespace Ctrlc\Cart\Tests\Feature;
 use Ctrlc\Cart\Facades\Cart;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiCartTest extends TestCase
 {
     use RefreshDatabase;
 
-    public User $productable;
+    public Model $productable;
 
     protected function setUp(): void
     {
