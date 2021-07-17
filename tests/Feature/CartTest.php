@@ -8,17 +8,18 @@ use Ctrlc\Cart\Contracts\ProductVariantContract;
 use Ctrlc\Cart\Facades\Cart;
 use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CartTest extends TestCase
 {
     use RefreshDatabase;
 
-    public User $productable;
+    public Model $productable;
 
     public ProductVariantContract $productVariant;
 
-    private int $variantQuantity = 10;
+    private int $variantAvailableQuantity = 10;
 
     protected function setUp(): void
     {
@@ -27,7 +28,7 @@ class CartTest extends TestCase
         $this->productable = User::factory()
             ->hasVariants(1, [
                 'default' => 1,
-                'quantity' => $this->variantQuantity,
+                'quantity' => $this->variantAvailableQuantity,
             ])
             ->create();
 
@@ -92,7 +93,7 @@ class CartTest extends TestCase
         Cart::add($this->productVariant, 1)
             ->add($this->productVariant, 1)
             ->remove($this->productVariant, 1)
-            ->add($this->productVariant, $this->variantQuantity + 1);
+            ->add($this->productVariant, $this->variantAvailableQuantity + 1);
     }
 
     public function test_add_unlimited_quantity_to_cart(): void
@@ -136,5 +137,13 @@ class CartTest extends TestCase
         $itemMeta = $cart->items->first()->meta;
         
         self::assertSame($meta, [$itemMeta->first()->key => $itemMeta->first()->value]);
+    }
+
+    public function test_update_product_quantity(): void
+    {
+        Cart::add($this->productVariant, 8)
+            ->updateQuantity($this->productVariant, 5);
+
+        self::assertEquals(5, Cart::items()->first()->quantity);
     }
 }

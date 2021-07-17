@@ -122,6 +122,26 @@ class Cart extends Model implements CartContract
         return $this;
     }
 
+    public function updateQuantity(ProductVariantContract $variant, ?int $quantity = 1, ?array $meta = []): self
+    {
+        $this->fresh('items.item');
+        $cartItem = $this->getCartItem($variant, $meta);
+        if (!$cartItem) {
+            throw new \InvalidArgumentException('Cart item for update quantity not found');
+        }
+
+        if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity)) {
+            throw new \InvalidArgumentException('Product of this quantity is not in stock');
+        }
+
+        $cartItem->quantity = $quantity;
+        $cartItem->save();
+
+        $this->load('items');
+
+        return $this;
+    }
+
     private function getCartItem(ProductVariantContract $variant, array $meta)
     {
         return $this->items()
