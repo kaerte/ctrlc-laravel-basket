@@ -21,7 +21,7 @@ interface Cart
 
     public function add(CartItemable $cartItem, ?int $quantity = 1, ?array $meta = []): self;
 
-    public function remove(CartItemable $cartItem, ?int $quantity = 1, ?array $meta = []);
+    public function remove(CartItemable $cartItem, ?array $meta = []);
 
     public function updateQuantity(CartItemable $cartItem, ?int $quantity = 1, ?array $meta = []): self;
     

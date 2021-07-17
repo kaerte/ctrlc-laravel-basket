@@ -63,14 +63,14 @@ class CartTest extends TestCase
             ->add($this->productVariant)
             ->remove($this->productVariant);
 
-        self::assertEquals(1, $cart->items->first()->quantity);
+        self::assertNull($cart->items->first());
     }
 
     public function test_remove_all_from_cart(): void
     {
         $cart = Cart::add($this->productVariant)
             ->add($this->productVariant)
-            ->remove($this->productVariant, 2);
+            ->remove($this->productVariant);
 
         self::assertEmpty($cart->items);
         self::assertEquals(0, Cart::total());
@@ -87,7 +87,7 @@ class CartTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         Cart::add($this->productVariant, 1)
             ->add($this->productVariant, 1)
-            ->remove($this->productVariant, 1)
+            ->remove($this->productVariant)
             ->add($this->productVariant, $this->variantAvailableQuantity + 1);
     }
 
@@ -140,5 +140,13 @@ class CartTest extends TestCase
             ->updateQuantity($this->productVariant, 5);
 
         self::assertEquals(5, Cart::items()->first()->quantity);
+    }
+
+    public function test_update_product_quantity_to_0(): void
+    {
+        Cart::add($this->productVariant, 8)
+            ->updateQuantity($this->productVariant, 0);
+
+        self::assertNull(Cart::items()->first());
     }
 }

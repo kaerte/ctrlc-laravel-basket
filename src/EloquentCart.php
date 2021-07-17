@@ -100,21 +100,15 @@ class EloquentCart extends Model implements Cart
         return $this;
     }
 
-    public function remove(CartItemable $variant, ?int $quantity = 1, ?array $meta = []): self
+    public function remove(CartItemable $variant, ?array $meta = []): self
     {
         if (! config('ctrlc.cart.allow_remove')) {
             throw new \InvalidArgumentException('Removing items from cart is disabled');
         }
 
-        \DB::transaction(function () use ($variant, $quantity, $meta) {
+        \DB::transaction(function () use ($variant, $meta) {
             $cartItem = $this->getCartItem($variant, $meta);
-            if ($cartItem->quantity === $quantity) {
-                $cartItem->delete();
-            }
-            if ($cartItem->quantity >= ($quantity + 1)) {
-                $cartItem->quantity -= $quantity;
-                $cartItem->save();
-            }
+            $cartItem->delete();
         }, 5);
 
         $this->load('items');
@@ -128,6 +122,10 @@ class EloquentCart extends Model implements Cart
         $cartItem = $this->getCartItem($variant, $meta);
         if (!$cartItem) {
             throw new \InvalidArgumentException('Cart item for update quantity not found');
+        }
+        
+        if ($quantity === 0) {
+            return $this->remove($variant, $meta);
         }
 
         if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity)) {
