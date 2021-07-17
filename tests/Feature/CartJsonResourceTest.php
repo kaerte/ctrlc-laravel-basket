@@ -10,7 +10,7 @@ use Ctrlc\Cart\Tests\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ApiCartTest extends TestCase
+class CartJsonResourceTest extends TestCase
 {
     use RefreshDatabase;
 

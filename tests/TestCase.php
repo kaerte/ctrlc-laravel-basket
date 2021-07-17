@@ -26,7 +26,5 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         /** @var $router Router */
         $router->get('/cart/get', [CartController::class, 'getCart'])->name('api_test.cart.get');
-        $router->post('/cart/add', [CartController::class, 'add'])->name('api_test.cart.add');
-        $router->post('/cart/remove', [CartController::class, 'remove'])->name('api_test.cart.remove');
     }
 }
