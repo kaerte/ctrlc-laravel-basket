@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Database\Factories;
 
-use Ctrlc\Cart\Models\ProductVariant;
+use Ctrlc\Cart\ProductVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductVariantFactory extends Factory
