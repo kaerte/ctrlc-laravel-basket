@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ctrlc\Cart\Traits;
 
-use Ctrlc\Cart\Models\ProductVariant;
+use Ctrlc\Cart\ProductVariant;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
