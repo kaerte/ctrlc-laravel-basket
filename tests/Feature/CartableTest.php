@@ -9,7 +9,6 @@ use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\App;
 
 class CartableTest extends TestCase
 {
@@ -31,7 +30,7 @@ class CartableTest extends TestCase
 
     public function test_assign_cart_to_cartable(): void
     {
-        $cart = App::make(Cart::class);
+        $cart = $this->app->make(Cart::class);
         $this->cartable->cart()->save($cart);
 
         self::assertTrue($this->cartable->is($this->cartable->cart->cartable));
