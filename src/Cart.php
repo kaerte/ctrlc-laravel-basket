@@ -28,6 +28,10 @@ interface Cart
     public function get(): self;
 
     public function create(): self;
+
+    public function removeCart(): null|bool;
+
+    public function merge(Cart ...$carts): self;
     
     public function discountCode(): mixed;
 

@@ -208,4 +208,21 @@ class EloquentCart extends Model implements Cart
     {
         return $this->getTotalAttribute(true) - $this->getTotalAttribute();
     }
+    
+    public function merge(Cart ...$carts): Cart
+    {
+        foreach ($carts as $cart) {
+            $cart->items()->each(function ($cartItem) {
+                $this->add($cartItem->item, $cartItem->quantity, $cartItem->meta->toArray());
+            });
+            $cart->removeCart();
+        }
+
+        return $this;
+    }
+
+    public function removeCart(): null|bool
+    {
+        return $this->delete();
+    }
 }

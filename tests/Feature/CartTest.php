@@ -10,6 +10,7 @@ use Ctrlc\Cart\Tests\TestCase;
 use Ctrlc\Cart\Tests\User as Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use InvalidArgumentException;
 
 class CartTest extends TestCase
 {
@@ -78,13 +79,13 @@ class CartTest extends TestCase
 
     public function test_add_over_quantity_to_cart(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         Cart::add($this->productVariant, 11);
     }
 
     public function test_add_over_quantity_in_multiple_operations_to_cart(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         Cart::add($this->productVariant, 1)
             ->add($this->productVariant, 1)
             ->remove($this->productVariant)
@@ -148,5 +149,27 @@ class CartTest extends TestCase
             ->updateQuantity($this->productVariant, 0);
 
         self::assertNull(Cart::items()->first());
+    }
+
+    public function test_merge_carts(): void
+    {
+        $cart = Cart::add($this->productVariant, 1);
+        $newCart = Cart::create();
+        $newCart->add($this->productVariant, 1);
+
+        $cart->merge($newCart);
+        
+        self::assertEquals(2, Cart::items()->first()->quantity);
+        self::assertNull($newCart->fresh());
+    }
+
+    public function test_merge_carts_over_quantity(): void
+    {
+        $cart = Cart::add($this->productVariant, 1);
+        $newCart = Cart::create();
+        $newCart->add($this->productVariant, 10);
+
+        $this->expectException(InvalidArgumentException::class);
+        $cart->merge($newCart);
     }
 }
