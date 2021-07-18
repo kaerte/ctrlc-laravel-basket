@@ -51,7 +51,7 @@ class EloquentCart extends Model implements Cart
     {
         $total = 0;
         foreach ($this->items as $item) {
-            $total += $item->price * $item->quantity;
+            $total += $item->price() * $item->quantity;
         }
         
         if (!$ignoreDiscount) {
@@ -75,7 +75,7 @@ class EloquentCart extends Model implements Cart
         $cartItem = $this->getCartItem($variant, $meta);
         $cartQuantity = (int) ($cartItem?->quantity ?? 0);
 
-        if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity + $cartQuantity)) {
+        if ($variant->availableQuantity() && $variant->availableQuantity() < ($quantity + $cartQuantity)) {
             throw new \InvalidArgumentException('Product of this quantity is not in stock');
         }
 
@@ -128,7 +128,7 @@ class EloquentCart extends Model implements Cart
             return $this->remove($variant, $meta);
         }
 
-        if ($variant->getAvailableQuantityAttribute() && $variant->getAvailableQuantityAttribute() < ($quantity)) {
+        if ($variant->availableQuantity() && $variant->availableQuantity() < ($quantity)) {
             throw new \InvalidArgumentException('Product of this quantity is not in stock');
         }
 

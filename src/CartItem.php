@@ -6,9 +6,9 @@ namespace Ctrlc\Cart;
 
 interface CartItem
 {
-    public function item(): CartItemable;
+    public function item(): mixed;
 
-    public function cart(): Cart;
+    public function cart(): mixed;
 
-    public function getPriceAttribute(): float | int;
+    public function price(): float | int;
 }

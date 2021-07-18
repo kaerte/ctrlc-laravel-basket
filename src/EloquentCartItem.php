@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Plank\Metable\Metable;
 
-class EloquentCartItem extends Model
+class EloquentCartItem extends Model implements CartItem
 {
     use Metable;
 
@@ -35,7 +35,7 @@ class EloquentCartItem extends Model
         return $this->belongsTo(EloquentCart::class);
     }
 
-    public function getPriceAttribute(): float | int
+    public function price(): float | int
     {
         return $this->item->price;
     }

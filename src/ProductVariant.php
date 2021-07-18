@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Ctrlc\Cart\Models;
+namespace Ctrlc\Cart;
 
-use Ctrlc\Cart\CartItemable;
 use Ctrlc\Cart\Database\Factories\ProductVariantFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,19 +29,19 @@ class ProductVariant extends Model implements CartItemable
         'default' => 'int',
     ];
 
-    protected $with = ['meta'];
+    protected $with = ['meta', 'productable'];
     
     public function productable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function getPriceAttribute(): int
+    public function price(): int
     {
         return (int) $this->attributes['price'];
     }
 
-    public function getAvailableQuantityAttribute(): int|null
+    public function availableQuantity(): int|null
     {
         return $this->quantity;
     }

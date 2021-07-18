@@ -6,7 +6,7 @@ namespace Ctrlc\Cart;
 
 interface CartItemable
 {
-    public function getPriceAttribute(): float | int;
+    public function price(): float | int;
 
-    public function getAvailableQuantityAttribute(): int | null;
+    public function availableQuantity(): int | null;
 }
