@@ -7,7 +7,7 @@ namespace Ctrlc\Cart\Traits;
 use Ctrlc\Cart\EloquentCart;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-trait HasCart
+trait Cartable
 {
     public function cart(): MorphOne
     {
