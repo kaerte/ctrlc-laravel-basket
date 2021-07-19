@@ -28,8 +28,11 @@ class CreateCarts extends Migration
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->morphs('item');
-            $table->foreignIdFor(EloquentCart::class, 'cart_id')->constrained();
+            $table->foreignIdFor(EloquentCart::class, 'cart_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->unsignedMediumInteger('quantity')->default(0);
+            
             $table->timestamps();
         });
     }
