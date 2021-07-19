@@ -225,4 +225,9 @@ class EloquentCart extends Model implements Cart
     {
         return $this->delete();
     }
+
+    public function isEmpty(): bool
+    {
+        return !$this->items()->exists();
+    }
 }

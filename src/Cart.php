@@ -40,4 +40,6 @@ interface Cart
     public function removeDiscountCode(): self;
 
     public function toJson(): JsonSerializable;
+
+    public function isEmpty(): bool;
 }
